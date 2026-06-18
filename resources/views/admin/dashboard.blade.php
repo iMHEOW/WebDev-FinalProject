@@ -5,7 +5,7 @@
 <div class="row g-4 mb-5">
     <!-- Card 1: Total Doctors (Active Blue) -->
     <div class="col-md-6 col-xl-3">
-        <div class="card border-0 text-white rounded-4 p-4 shadow-sm" style="background: linear-gradient(135deg, #0f5cfd 0%, #0046d5 100%);">
+        <div class="card border-0 text-white rounded-4 p-3 shadow-sm" style="background: linear-gradient(135deg, #0f5cfd 0%, #0046d5 100%);">
             <div class="d-flex align-items-center gap-2 mb-3 opacity-90">
                 <i class="bi bi-person-fill fs-5"></i>
                 <span class="fw-semibold" style="font-size: 0.9rem;">Total Doctors</span>
@@ -20,7 +20,7 @@
     
     <!-- Card 2: Total Patient -->
     <div class="col-md-6 col-xl-3">
-        <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
+        <div class="card border-0 bg-white rounded-4 p-3 shadow-sm">
             <div class="d-flex align-items-center gap-2 mb-3 text-secondary">
                 <i class="bi bi-activity fs-5 text-primary"></i>
                 <span class="fw-semibold" style="font-size: 0.9rem;">Total Patient</span>
@@ -35,7 +35,7 @@
 
     <!-- Card 3: Total Transaction -->
     <div class="col-md-6 col-xl-3">
-        <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
+        <div class="card border-0 bg-white rounded-4 p-3 shadow-sm">
             <div class="d-flex align-items-center gap-2 mb-3 text-secondary">
                 <i class="bi bi-wallet2 fs-5 text-primary"></i>
                 <span class="fw-semibold" style="font-size: 0.9rem;">Total Transaction</span>
@@ -50,7 +50,7 @@
 
     <!-- Card 4: Total Appointment -->
     <div class="col-md-6 col-xl-3">
-        <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
+        <div class="card border-0 bg-white rounded-4 p-3 shadow-sm">
             <div class="d-flex align-items-center gap-2 mb-3 text-secondary">
                 <i class="bi bi-calendar-check fs-5 text-primary"></i>
                 <span class="fw-semibold" style="font-size: 0.9rem;">Total Appointment</span>
