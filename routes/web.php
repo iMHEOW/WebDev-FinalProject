@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserAdminController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -9,6 +9,6 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function() {
 
-   Route::get('/', [UserAdminController::class, 'index']);
+   Route::get('/dashboard', [AdminController::class, 'dashboard']);
 
 });

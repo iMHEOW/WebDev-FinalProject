@@ -1,35 +1,7 @@
-@extends('common.main')
+@extends('adminLayout')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-5 pb-3">
-    <!-- Search Bar -->
-    <div class="input-group" style="max-width: 320px;">
-        <span class="input-group-text bg-white border-0 ps-3 pe-2 text-muted rounded-start-pill">
-            <i class="bi bi-search"></i>
-        </span>
-        <input type="text" class="form-control border-0 ps-1 rounded-end-pill" placeholder="Search" style="box-shadow: none; background-color: #fff; font-size: 0.95rem;">
-    </div>
 
-    <!-- Admin Profile & Notifications -->
-    <div class="d-flex align-items-center gap-4">
-        <!-- Notification Icon -->
-        <div class="position-relative cursor-pointer d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; background-color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-            <i class="bi bi-bell text-primary fs-5"></i>
-            <span class="position-absolute p-1 bg-danger border border-light rounded-circle" style="top: 10px; right: 10px;"></span>
-        </div>
-        
-        <!-- User Profile -->
-        <div class="d-flex align-items-center gap-3">
-            <div class="text-end">
-                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.95rem;">Eujen</h6>
-                <small class="text-muted" style="font-size: 0.8rem;">Admin</small>
-            </div>
-            <img src="#" alt="Admin Avatar" class="rounded-circle shadow-sm" style="width: 44px; height: 44px; object-fit: cover;">
-        </div>
-    </div>
-</div>
-
-<!-- Metrics Cards Row -->
 <div class="row g-4 mb-5">
     <!-- Card 1: Total Doctors (Active Blue) -->
     <div class="col-md-6 col-xl-3">
