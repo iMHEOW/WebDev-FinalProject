@@ -23,21 +23,20 @@
                 <nav class="d-flex flex-column gap-1">
                     <p class="fw-bold text-muted text-uppercase px-3 mb-2" style="font-size: 10px; letter-spacing: 0.5px;">Navigation Menu</p>
                     
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-
+                    <a href="{{ route('admin.dashboard') }}" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold {{ request()->routeIs('admin.dashboard') ? 'nav-link-active' : 'nav-link-custom' }}" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
                         <i class="bi bi-grid fs-6"></i>
                         <span>Active Dashboard</span>
                     </a>
 
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style=" font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                    <a href="{{ route('admin.doctors') }}" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold {{ request()->routeIs('admin.doctors') ? 'nav-link-active' : 'nav-link-custom' }}" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
                         <i class="bi bi-person fs-6"></i>
                         <span>Doctors</span>
                     </a>
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                    <a href="{{ route('admin.patients') }}" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold {{ request()->routeIs('admin.patients') ? 'nav-link-active' : 'nav-link-custom' }}" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
                         <i class="bi bi-person fs-6"></i>
                         <span>Patients</span>
                     </a>
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                    <a href="{{ route('admin.appointments') }}" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold {{ request()->routeIs('admin.appointments') ? 'nav-link-active' : 'nav-link-custom' }}" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
                         <i class="bi bi-calendar fs-6"></i>
                         <span>Appointments</span>
                     </a>
@@ -122,6 +121,10 @@
         display: inline-block;
         text-decoration: none;
         transition: background-color 0.2s;
+    }
+    .nav-link-active {
+        background-color: #f0f4ff !important;
+        color: #0f5cfd !important;
     }
 
     .btn-blue:hover {

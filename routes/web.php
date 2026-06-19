@@ -22,6 +22,9 @@ Route::group(['prefix' => 'user'], function() {
 
 Route::group(['prefix' => 'admin'], function() {
 
-   Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+   Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+   Route::get('/patients', [AdminController::class, 'patients'])->name('admin.patients');
+   Route::get('/doctors', [AdminController::class, 'doctors'])->name('admin.doctors');
+   Route::get('/appointments', [AdminController::class, 'appointments'])->name('admin.appointments');
 
 });
