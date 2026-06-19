@@ -23,25 +23,34 @@
                 <nav class="d-flex flex-column gap-1">
                     <p class="fw-bold text-muted text-uppercase px-3 mb-2" style="font-size: 10px; letter-spacing: 0.5px;">Navigation Menu</p>
                     
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-decoration-none fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.9rem;">
-                        <svg style="width: 20px; height: 50px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
+                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+
+                        <i class="bi bi-grid fs-6"></i>
                         <span>Active Dashboard</span>
                     </a>
 
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.9rem; transition: all 0.2s;">
-                        <svg style="width: 20px; height: 50px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style=" font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                        <i class="bi bi-person fs-6"></i>
                         <span>Doctors</span>
                     </a>
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.9rem; transition: all 0.2s;">
-                        <svg style="width: 20px; height: 50px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                        <i class="bi bi-person fs-6"></i>
                         <span>Patients</span>
+                    </a>
+                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                        <i class="bi bi-calendar fs-6"></i>
+                        <span>Appointments</span>
                     </a>
                 </nav>
             </div>
 
-            <div>
-                <a href="#" class="d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.9rem; transition: all 0.2s;">
-                    <svg style="width: 20px; height: 25px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            <div class="d-flex flex-column gap-0">
+                <a href="#" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                    <i class="bi bi-gear fs-6"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                    <i class="bi bi-box-arrow-right fs-6"></i>
                     <span>Log out</span>
                 </a>
             </div>
