@@ -49,7 +49,7 @@
                     <i class="bi bi-gear fs-6"></i>
                     <span>Settings</span>
                 </a>
-                <a href="#" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
+                <a href="{{ route('logout') }}" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
                     <i class="bi bi-box-arrow-right fs-6"></i>
                     <span>Log out</span>
                 </a>
