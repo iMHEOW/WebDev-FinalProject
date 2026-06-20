@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,5 +24,12 @@ Route::group(['prefix' => 'user'], function() {
 Route::group(['prefix' => 'admin'], function() {
 
    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+});
+
+Route::group(['prefix' => 'profile'], function() {
+
+   Route::get('/settings', [ProfileController::class, 'show'])->name('profile.settings');
+   Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
 
 });
