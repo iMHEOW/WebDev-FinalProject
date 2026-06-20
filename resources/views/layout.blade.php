@@ -3,84 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUP Care - @yield('title', 'Portal')</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>PUP Care Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
-<body class="font-sans antialiased">
+<body>
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="d-flex" style="height: 100vh; overflow: hidden;">
         
-        <aside class="w-64 bg-white border-r border-slate-100 p-5 flex flex-col justify-between h-full shrink-0">
+        <aside class="bg-white border-end p-4 d-flex flex-column justify-content-between h-100" style="width: 260px; flex-shrink: 0;">
             <div>
-                <div class="flex items-center space-x-3 px-2 mb-8">
-                    <div class="bg-blue-600 text-white p-2 rounded-xl shadow-md shadow-blue-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="d-flex align-items-center mb-4 px-2">
+                    <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height: 40px;">
+                        <i class="bi bi-heart-pulse-fill fs-5"></i>
                     </div>
-                    <span class="text-xl font-bold text-slate-800 tracking-tight">PUP Care</span>
+                    <span class="fs-5 fw-bold text-dark">PUP Care</span>
                 </div>
 
-                <nav class="space-y-1">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-4 mb-2">Navigation Menu</p>
+                <nav class="nav flex-column gap-1">
+                    <p class="text-uppercase text-muted fw-bold mb-2 px-3" style="font-size: 10px; letter-spacing: 0.5px;">Navigation Menu</p>
                     
-                    <a href="#" class="flex items-center space-x-3 bg-blue-50 text-blue-600 px-4 py-3 rounded-xl text-sm font-semibold transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
-                        <span>Active Dashboard</span>
+                    <a href="/doctor/dashboard" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->is('doctor/dashboard') ? 'text-primary fw-bold' : 'text-secondary fw-medium' }}">
+                        <i class="bi bi-grid-1x2-fill me-2"></i> Dashboard
                     </a>
 
-                    <a href="#" class="flex items-center space-x-3 text-slate-400 hover:text-slate-700 hover:bg-slate-50 px-4 py-3 rounded-xl text-sm font-medium transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        <span>Secondary Tab</span>
+                    <a href="/doctor/directory" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->is('doctor/directory') ? 'text-primary fw-bold' : 'text-secondary fw-medium' }}">
+                        <i class="bi bi-people-fill me-2"></i> Patient Directory
+                    </a>
+
+                    <a href="/doctor/consultation" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->is('doctor/consultation') ? 'text-primary fw-bold' : 'text-secondary fw-medium' }}">
+                        <i class="bi bi-file-earmark-text-fill me-2"></i> Consultation Form
                     </a>
                 </nav>
             </div>
 
             <div>
-                <a href="#" class="flex items-center space-x-3 text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-4 py-3 rounded-xl text-sm font-medium transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span>Log out</span>
+                <a href="#" class="nav-link text-muted rounded-3 px-3 py-2.5 fw-medium small text-danger">
+                    <i class="bi bi-box-arrow-right me-2"></i> Log out
                 </a>
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <div class="flex-grow-1 d-flex flex-column h-100" style="overflow: hidden;">
             
-            <header class="bg-white border-b border-slate-100 h-20 shrink-0 flex items-center justify-between px-10">
-                <div class="relative w-96">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <header class="bg-white border-bottom h-20 px-4 d-flex align-items-center justify-content-between" style="height: 80px; flex-shrink: 0;">
+                <div class="input-group" style="width: 350px;">
+                    <span class="input-group-text bg-light border-0 text-muted rounded-start-pill ps-3">
+                        <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" placeholder="Search portal metrics..." class="w-full bg-[#f4f7fc] pl-11 pr-4 py-2.5 rounded-full text-sm outline-none border border-transparent focus:border-slate-200 focus:bg-white transition">
+                    <input type="text" placeholder="Search portal metrics..." class="form-control bg-light border-0 rounded-end-pill text-sm py-2">
                 </div>
 
-                <div class="flex items-center space-x-6">
-                    <button class="relative text-slate-400 hover:text-slate-600 transition">
-                        <span class="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </button>
-                    <div class="flex items-center space-x-2 text-sm font-medium text-slate-700">
-                        <div class="w-6 h-4 bg-slate-200 rounded-sm overflow-hidden flex items-center justify-center text-[8px] font-bold text-slate-500">PH</div>
-                        <span>English</span>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <p class="mb-0 fw-bold text-dark small">Dr. Shanto</p>
+                        <p class="mb-0 text-muted small" style="font-size: 11px;">Cardiologist</p>
                     </div>
-                    <div class="flex items-center space-x-3 border-l border-slate-100 pl-6">
-                        <div class="text-right">
-                            <p class="text-sm font-bold text-slate-800">User Account</p>
-                            <p class="text-xs text-slate-400 font-medium">Assigned Portal Role</p>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-extrabold shadow-sm">
-                            UA
-                        </div>
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
+                        DS
                     </div>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-y-auto p-10 space-y-8">
-                
+            <main class="flex-grow-1 p-4 bg-light" style="overflow-y: auto;">
                 @yield('content')
-
             </main>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
@@ -89,32 +80,26 @@
         background-color: #f0f4fa;
         color: #475569;
     }
-
     .hospital-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 16px;
         padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-
     .btn-blue {
         background-color: #2563eb;
         color: #ffffff;
         font-weight: 600;
-        padding: 12px 24px;
+        padding: 10px 20px;
         border-radius: 12px;
         text-align: center;
         display: inline-block;
         text-decoration: none;
-        transition: background-color 0.2s;
+        border: none;
     }
-
     .btn-blue:hover {
         background-color: #1d4ed8;
-    }
-
-    .text-muted {
-        color: #94a3b8;
-        font-size: 12px;
+        color: #ffffff;
     }
 </style>

@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; 
 
 class DoctorController extends Controller
 {
     public function dashboard()
     {
-        return view('doctor.dashboard');
+       
+        $appointments = DB::select("SELECT * FROM appointments");
+
+        
+        return view('doctor.dashboard', [
+            'appointments' => $appointments
+        ]);
     }
 
-    public function patients()
+    public function patientDirectory()
     {
-        return view('doctor.patients');
+        
+        $patients = DB::select("SELECT * FROM users");
+
+        return view('doctor.patientDirectory', [
+            'patients' => $patients
+        ]);
     }
 
     public function consultation()
