@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DoctorController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,4 +33,11 @@ Route::group(['prefix' => 'profile'], function() {
    Route::get('/settings', [ProfileController::class, 'show'])->name('profile.settings');
    Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
 
+});
+
+Route::prefix('doctor')->group(function () {
+    Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('doctor.dashboard');
+    Route::get('/patients', [DoctorController::class, 'patients'])->name('doctor.patients');
+    Route::get('/consultation', [DoctorController::class, 'consultation'])->name('doctor.consultation');
+    Route::get('/directory', [DoctorController::class, 'patientDirectory']);
 });
