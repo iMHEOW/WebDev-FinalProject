@@ -10,6 +10,7 @@ class ProfileController extends Controller
 
 public function show()
 {
+    
     $user = (object) [
         'name'               => 'Juan dela Cruz',
         'email'              => 'juan@example.com',
@@ -22,7 +23,7 @@ public function show()
         'license_number'     => '',
         'availability'       => '',
     ];
-
+    
     // uncomment the code below if you want to test the doctor view
 
     /*

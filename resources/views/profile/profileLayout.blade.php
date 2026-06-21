@@ -13,7 +13,7 @@
     @php
     $authUser = (object) [
         'name' => 'Juan dela Cruz',
-        'role' => 'doctor',
+        'role' => 'patient',
     ];
     @endphp
 
