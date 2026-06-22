@@ -19,6 +19,9 @@ public function show()
         'blood_type'         => 'O+',
         'allergies'          => '',
         'medical_conditions' => '',
+        'birthday'           => '1990-05-15',
+        'age'                => \Carbon\Carbon::parse('1990-05-15')->age,
+        'sex'                => 'Male',
         'specialization'     => '',
         'license_number'     => '',
         'availability'       => '',
@@ -69,9 +72,12 @@ public function show()
 
         if ($user->role === 'patient') {
             $rules = array_merge($rules, [
-                'allergies' => 'nullable|string',
+                'blood_type'         => 'nullable|string',
+                'allergies'          => 'nullable|string',
                 'medical_conditions' => 'nullable|string',
-                'blood_type' => 'nullable|string',
+                'birthday'           => 'nullable|date',
+                'age'                => 'nullable|integer|min:0|max:150',
+                'sex'                => 'nullable|string|in:Male,Female,Other',
             ]);
         } elseif ($user->role === 'doctor') {
             $rules = array_merge($rules, [

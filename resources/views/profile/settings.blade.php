@@ -93,6 +93,34 @@
                                 @enderror
                             </div>
 
+                            {{-- Add after the blood_type col --}}
+
+                        <div class="col-12 col-md-6">
+                            <label for="sex" class="form-label fw-semibold text-dark">Sex</label>
+                            <select class="form-select @error('sex') is-invalid @enderror" id="sex" name="sex">
+                                <option value="">Select Sex</option>
+                                <option value="Male"   {{ old('sex', $user->sex)   === 'Male'   ? 'selected' : '' }}>Male</option>
+                                <option value="Female" {{ old('sex', $user->sex)   === 'Female' ? 'selected' : '' }}>Female</option>
+                                <option value="Other"  {{ old('sex', $user->sex)   === 'Other'  ? 'selected' : '' }}>Other</option>
+                            </select>
+                            @error('sex')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="birthday" class="form-label fw-semibold text-dark">Birthday</label>
+                            <input type="date" class="form-control @error('birthday') is-invalid @enderror" id="birthday" name="birthday" value="{{ old('birthday', $user->birthday) }}">
+                            @error('birthday')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="age" class="form-label fw-semibold text-dark">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" value="{{ old('age', $user->age) }}" readonly>
+                        </div>
+
                             <div class="col-12">
                                 <label for="allergies" class="form-label fw-semibold text-dark">Allergies</label>
                                 <textarea class="form-control @error('allergies') is-invalid @enderror" id="allergies" name="allergies" rows="3" placeholder="List any known allergies">{{ old('allergies', $user->allergies) }}</textarea>
@@ -148,8 +176,9 @@
                     
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <label for="password" class="form-label fw-semibold text-dark">New Password <span class="text-muted fw-normal">(Leave blank to keep current)</span></label>
+                            <label for="password" class="form-label fw-semibold text-dark">New Password</label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Enter new password">
+                            <small class="text-muted">Leave blank to keep current</small>
                             @error('password')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -217,4 +246,16 @@
         font-weight: 500;
     }
 </style>
+
+<script>
+    document.getElementById('birthday')?.addEventListener('change', function () {
+        const birthday = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - birthday.getFullYear();
+        const m = today.getMonth() - birthday.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) age--;
+        document.getElementById('age').value = age >= 0 ? age : '';
+    });
+</script>
+
 @endsection
