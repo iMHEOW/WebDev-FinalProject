@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUP Care - Patient Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body class="antialiased">
 
     <div class="d-flex vh-100 overflow-hidden">
-        
         <aside class="bg-white border-end p-4 d-flex flex-column justify-content-between h-100 flex-shrink-0" style="width: 256px;">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-4 px-2">
@@ -20,19 +20,19 @@
                 </div>
 
                 <nav class="d-flex flex-column gap-1">
-                    <a href="/patient/dashboard" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/dashboard" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
                         <span class="small">Home</span>
                     </a>
-                    <a href="/patient/set-appointment" class="d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded text-primary bg-primary bg-opacity-10 fw-semibold transition-all">
+                    <a href="/patient/{{ $patient_id }}/set-appointment" class="d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded text-primary bg-primary bg-opacity-10 fw-semibold transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 4 V 20 M 4 12 H 20"></path></svg>
                         <span class="small">Set Appointment</span>
                     </a>
-                    <a href="/patient/records" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/records" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span class="small">My Medical Records</span>
                     </a>
-                    <a href="/patient/prescriptions" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/prescriptions" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span class="small">My Prescriptions</span>
                     </a>
@@ -49,60 +49,183 @@
 
         <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden">
             
-            <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 px-md-5 flex-shrink-0" style="height: 80px;">
+        <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 px-md-5 flex-shrink-0" style="height: 80px;">
                 
-                <div class="position-relative" style="width: 384px;">
-                    <span class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted d-flex">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </span>
-                    <input type="text" placeholder="Search" class="form-control rounded-pill border-0 ps-5 py-2 search-input shadow-none transition-all" style="background-color: #f4f7fc; font-size: 0.875rem;">
-                </div>
+                <div class="position-relative" style="width: 400px;"> </div>
 
                 <div class="d-flex align-items-center gap-4">
-                    <button class="btn btn-link text-secondary p-0 position-relative text-decoration-none icon-hover">
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-white rounded-circle"></span>
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </button>
-                   
+        
                     <div class="d-flex align-items-center gap-3 border-start ps-4">
                         <div class="text-end">
-                            <p class="mb-0 small fw-bold text-dark lh-1">Anastasia L. Megistus</p>
+                            <p class="mb-0 small fw-bold text-dark lh-1">{{ $patientName }}</p>
                             <p class="mb-0 text-muted fw-medium" style="font-size: 12px;">Patient</p>
                         </div>
                         <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px;">
-                            AM
+                            <i class="bi bi-person fs-4"></i>
                         </div>
                     </div>
                 </div>
             </header>
 
             <main class="flex-grow-1 overflow-auto p-4 p-md-5">
-                
                 <div class="row g-4 justify-content-center">
-                    
                     <div class="col-12 col-lg-8 ">
                         <div class="hospital-card d-flex flex-column h-100" style="min-height: 480px;">
                             <div>
-                                <!-- <div class="d-flex justify-content-between align-items-center mb-4"> -->
-                                    <h3 class="fw-bold text-dark mb-0 fs-5"  style="letter-spacing: -0.5px;"><center>Set an Appointment</center></h3>
-                                <!-- </div> -->
+                                <h3 class="fw-bold text-dark mb-3 fs-5"  style="letter-spacing: -0.5px;"><center>Set an Appointment</center></h3>
                                 
-                                
+                                <form action="{{ route('patient.set', ['patient' => $patient_id]) }}" method="POST">
+                                @csrf
+
+                                @if($errors->any())
+                                    @foreach($errors->all() as $error)
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $error }}
+                                    </div>
+                                    @endforeach
+                                @endif
+                               
+                                <div class="mb-3">
+                                    <label for="doctor" class="form-label">
+                                        Doctor
+                                    </label>
+                                    <select name="doctor_id" id="doctor" class="form-select" required>
+                                        <option value="">Select Doctor</option>
+                                        @foreach($doctors as $doctor)
+                                            <option value="{{ $doctor->doctor_id }}">
+                                                Dr. {{ $doctor->name }}   ({{$doctor->department }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label d-block">
+                                        Visit Type
+                                    </label>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="visit_type" id="inPerson" value="In Person" checked>
+                                        <label class="form-check-label" for="inPerson">
+                                            In Person
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="visit_type" id="teleconsult" value="Teleconsult">
+                                        <label class="form-check-label" for="teleconsult">
+                                            Teleconsult
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="appointment_date" class="form-label">
+                                        Date
+                                    </label>
+                                    <input type="date" name="appointment_date" id="appointment_date" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="appointment_time" class="form-label">
+                                        Available Time
+                                    </label>
+                                    <select name="appointment_time" id="appointment_time" class="form-select" required>
+                                        <option value="">Select Time</option>
+                                        <option value="08:30:00">08:30</option>
+                                        <option value="09:00:00">09:00</option>
+                                        <option value="09:30:00">09:30</option>
+                                        <option value="10:00:00">10:00</option>
+                                        <option value="10:30:00">10:30</option>
+                                        <option value="11:00:00">11:00</option>
+                                        <option value="14:00:00">14:00</option>
+                                        <option value="14:30:00">14:30</option>
+                                        <option value="15:00:00">15:00</option>
+                                        <option value="15:30:00">15:30</option>
+                                        <option value="16:00:00">16:00</option>
+                                        <option value="16:30:00">16:30</option>
+                                        <option value="17:00:00">17:00</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="reason" class="form-label">
+                                        Reason / Symptoms
+                                    </label>
+                                    <textarea name="symptom" id="symptom" rows="3" class="form-control" placeholder="Describe your symptoms..." required></textarea>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="notes" class="form-label">
+                                        Additional Notes
+                                    </label>
+                                    <textarea name="notes" id="notes" rows="3" class="form-control" placeholder="Any additional information"></textarea>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4">
+                                        Cancel
+                                    </a>
+
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        Set Appointment
+                                    </button>
+                                </div>
+
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"> </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const doctorSelect = document.getElementById('doctor');
+            const dateInput = document.getElementById('appointment_date');
+            const timeSelect = document.getElementById('appointment_time');
+
+            function updateTimeSlots() {
+                const doctorId = doctorSelect.value;
+                const date = dateInput.value;
+
+                Array.from(timeSelect.options).forEach(option => {
+                    if (option.value !== "") {
+                        option.disabled = false;
+                        option.text = option.value.substring(0, 5); 
+                    }
+                });
+
+                if (doctorId && date){
+                    fetch(`/patient/{{ $patient_id }}/booked-slot?doctor_id=${doctorId}&date=${date}`)
+                        .then(response => response.text()) 
+                        .then(text => {
+                            return JSON.parse(text); 
+                        })
+                        .then(bookedTimes => {
+                            Array.from(timeSelect.options).forEach(option => {
+                                if (bookedTimes.includes(option.value)) {
+                                    option.disabled = true;
+                                    option.text += "                    --- Not Available ---";
+                                }
+                            });
+                        })
+                        .catch(error => console.error("Error fetching times:", error));
+                }
+            }
+            doctorSelect.addEventListener('change', updateTimeSlots);
+            dateInput.addEventListener('change', updateTimeSlots);
+            updateTimeSlots();
+        });
+    </script>
 </body>
 </html>
 
 <style>
-    /* Base Overrides */
     body {
         background-color: #f0f4fa;
         color: #475569;
@@ -113,7 +236,6 @@
         transition: all 0.2s ease-in-out;
     }
 
-    /* Sidebar Navigation Hovers */
     .nav-link-custom {
         color: #94a3b8; 
     }
@@ -130,7 +252,6 @@
         color: #e11d48; 
     }
 
-    /* Header Interactions */
     .search-input:focus {
         background-color: #ffffff !important;
         border-color: #e2e8f0;
@@ -144,7 +265,6 @@
         color: #475569 !important;
     }
 
-    /* Shared Card Style */
     .hospital-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
@@ -152,7 +272,6 @@
         padding: 24px;
     }
 
-    /* Custom Badges matching Tailwind colors */
     .badge-indigo {
         background-color: #eef2ff;
         color: #4f46e5;
@@ -167,7 +286,6 @@
         font-weight: 700;
     }
 
-    /* Action Links */
     .btn-start {
         font-size: 12px;
         font-weight: 700;
@@ -182,7 +300,6 @@
         color: #2563eb;
     }
 
-    /* Buttons */
     .btn-blue {
         background-color: #2563eb;
         color: #ffffff;
@@ -199,12 +316,10 @@
         color: #ffffff;
     }
 
-    /* Custom text-muted to match your exact hex */
     .text-muted {
         color: #94a3b8 !important; 
     }
     
-    /* Table row subtle border override */
     tbody tr.border-bottom {
         border-color: #f8fafc !important;
     }

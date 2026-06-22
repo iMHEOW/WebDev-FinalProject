@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUP Care - Patient Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body class="antialiased">
 
@@ -20,19 +21,19 @@
                 </div>
 
                 <nav class="d-flex flex-column gap-1">
-                    <a href="/patient/dashboard" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/dashboard" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
                         <span class="small">Home</span>
                     </a>
-                    <a href="/patient/set-appointment" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/set-appointment" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 4 V 20 M 4 12 H 20"></path></svg>
                         <span class="small">Set Appointment</span>
                     </a>
-                    <a href="/patient/records" class="d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded text-primary bg-primary bg-opacity-10 fw-semibold transition-all">
+                    <a href="/patient/{{ $patient_id }}/records" class="d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded text-primary bg-primary bg-opacity-10 fw-semibold transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span class="small">My Medical Records</span>
                     </a>
-                    <a href="/patient/prescriptions" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
+                    <a href="/patient/{{ $patient_id }}/prescriptions" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span class="small">My Prescriptions</span>
                     </a>
@@ -48,29 +49,16 @@
         </aside>
 
         <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden">
-            
             <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 px-md-5 flex-shrink-0" style="height: 80px;">
-                
-                <div class="position-relative" style="width: 384px;">
-                    <span class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted d-flex">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </span>
-                    <input type="text" placeholder="Search" class="form-control rounded-pill border-0 ps-5 py-2 search-input shadow-none transition-all" style="background-color: #f4f7fc; font-size: 0.875rem;">
-                </div>
-
+                <div class="position-relative" style="width: 400px;"> </div>
                 <div class="d-flex align-items-center gap-4">
-                    <button class="btn btn-link text-secondary p-0 position-relative text-decoration-none icon-hover">
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-white rounded-circle"></span>
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </button>
-                   
                     <div class="d-flex align-items-center gap-3 border-start ps-4">
                         <div class="text-end">
-                            <p class="mb-0 small fw-bold text-dark lh-1">Anastasia L. Megistus</p>
+                            <p class="mb-0 small fw-bold text-dark lh-1">{{ $patientName }}</p>
                             <p class="mb-0 text-muted fw-medium" style="font-size: 12px;">Patient</p>
                         </div>
                         <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px;">
-                            AM
+                            <i class="bi bi-person fs-4"></i>
                         </div>
                     </div>
                 </div>
@@ -78,36 +66,64 @@
 
             <main class="flex-grow-1 overflow-auto p-4 p-md-5">
 
+            <div class="row mb-4">
+                <div class="col-12 col-md-6">
+                    <div class="card shadow-sm text-center border-light rounded-4 h-100">
+                        <div class="card-body p-4">
+                            <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">
+                                New Records This Month
+                            </h6>
+                            <h1 class="display-4 fw-bold text-primary mb-0">
+                                {{ $monthRecord ?? 0 }}
+                            </h1>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-12 col-md-6">
+                    <div class="card shadow-sm text-center border-light rounded-4 h-100">
+                        <div class="card-body p-4">
+                            <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">
+                                Total Records
+                            </h6>
+                            <h1 class="display-4 fw-bold text-success mb-0">
+                                {{ $totalRecord ?? 0 }}
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                 <div class="row g-4 justify-content-center">
-                    
-                    <div class="col-12 col-lg-10">
-                        <div class="hospital-card d-flex flex-column h-100" style="min-height: 480px;">
-                            <nav class="navbar bg-body-tertiary">
+                    <div class="col-12">
+                        <div class="hospital-card d-flex flex-column h-100" style="min-height: 300px;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h2 class="fw-bold text-dark " style="letter-spacing: -0.5px;">My Medical Records</h2>
+                            </div>
+
+                            <nav class="navbar bg-transparent mb-3">
                                 <div class="container-fluid">
-                                    <form method = "GET" action = "{{route('searchRecord')}}" class="d-flex" role="search">
-                                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name = "param" value = "{{request('param')}} ">
+                                    <form method = "GET" action = "{{route('searchRecord', ['patient' => $patient_id ])}}" class="d-flex" role="search">
+                                    <div class="input-group me-2" style="max-width: 100%;">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input class="form-control me-2" type="search"  aria-label="Search" name = "param" value = "{{request('param')}}" placeholder="Enter keyword">
+                                    </div>
                                         <button class="btn btn-outline-success" type="submit">Search</button>
                                     </form>
                                 </div>
                             </nav>    
                             
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="fw-bold text-dark mb-0 fs-5" style="letter-spacing: -0.5px;">My Medical Record</h4>
-                                    <span class="text-muted fw-semibold" style="font-size: 12px;">Sorted by Date</span>
-                                </div>
-                                
+                            <div>                             
                                 <div class="table-responsive">
                                     <table class="table table-borderless align-middle mb-0">
                                         <thead>
                                             <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
-                                                <th scope = "col">Date</th>
-                                                <th scope = "col">Type</th>
-                                                <th scope = "col">Doctor</th>
-                                                <th scope = "col">Summary</th>
-                                                <th scope = "col">Action</th>
+                                                <th scope = "col"><center>Date</center></th>
+                                                <th scope = "col"><center>Type</center></th>
+                                                <th scope = "col"><center>Doctor</center></th>
+                                                <th scope = "col"><center>Summary</center></th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-dark fw-medium" style="font-size: 14px;">
@@ -125,9 +141,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </main>
         </div>
     </div>
@@ -137,7 +151,6 @@
 </html>
 
 <style>
-    /* Base Overrides */
     body {
         background-color: #f0f4fa;
         color: #475569;
@@ -148,7 +161,6 @@
         transition: all 0.2s ease-in-out;
     }
 
-    /* Sidebar Navigation Hovers */
     .nav-link-custom {
         color: #94a3b8; 
     }
@@ -165,7 +177,6 @@
         color: #e11d48; 
     }
 
-    /* Header Interactions */
     .search-input:focus {
         background-color: #ffffff !important;
         border-color: #e2e8f0;
@@ -179,7 +190,6 @@
         color: #475569 !important;
     }
 
-    /* Shared Card Style */
     .hospital-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
@@ -187,7 +197,6 @@
         padding: 24px;
     }
 
-    /* Custom Badges matching Tailwind colors */
     .badge-indigo {
         background-color: #eef2ff;
         color: #4f46e5;
@@ -202,7 +211,6 @@
         font-weight: 700;
     }
 
-    /* Action Links */
     .btn-start {
         font-size: 12px;
         font-weight: 700;
@@ -217,7 +225,6 @@
         color: #2563eb;
     }
 
-    /* Buttons */
     .btn-blue {
         background-color: #2563eb;
         color: #ffffff;
@@ -234,12 +241,10 @@
         color: #ffffff;
     }
 
-    /* Custom text-muted to match your exact hex */
     .text-muted {
         color: #94a3b8 !important; 
     }
     
-    /* Table row subtle border override */
     tbody tr.border-bottom {
         border-color: #f8fafc !important;
     }
