@@ -19,4 +19,8 @@ class AdminController extends Controller
     public function appointments(){
         return view('admin.appointments');
     }
+
+    public function tickets(){
+        return view('admin.tickets');
+    }
 }

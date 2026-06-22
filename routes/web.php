@@ -26,5 +26,6 @@ Route::group(['prefix' => 'admin'], function() {
    Route::get('/patients', [AdminController::class, 'patients'])->name('admin.patients');
    Route::get('/doctors', [AdminController::class, 'doctors'])->name('admin.doctors');
    Route::get('/appointments', [AdminController::class, 'appointments'])->name('admin.appointments');
+   Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
 
 });
