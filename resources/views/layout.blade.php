@@ -46,14 +46,7 @@
 
         <div class="flex-grow-1 d-flex flex-column h-100" style="overflow: hidden;">
             
-            <header class="bg-white border-bottom h-20 px-4 d-flex align-items-center justify-content-between" style="height: 80px; flex-shrink: 0;">
-                <div class="input-group" style="width: 350px;">
-                    <span class="input-group-text bg-light border-0 text-muted rounded-start-pill ps-3">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" placeholder="Search portal metrics..." class="form-control bg-light border-0 rounded-end-pill text-sm py-2">
-                </div>
-
+            <header class="bg-white border-bottom h-20 px-4 d-flex align-items-center justify-content-end" style="height: 80px; flex-shrink: 0;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-end">
                         <p class="mb-0 fw-bold text-dark small">Dr. Shanto</p>

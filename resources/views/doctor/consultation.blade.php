@@ -1,82 +1,85 @@
 @extends('layout')
 
 @section('content')
-<div class="container-fluid p-0">
+<div class="container py-3">
+    <div class="card border-0 shadow-sm p-4 bg-white">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h2 class="fw-bold text-dark mb-0">New Clinical Consultation Log</h2>
+            <span class="badge bg-light text-primary border px-3 py-2 fw-bold">
+                🗓️ Session Date: {{ date('F d, Y') }}
+            </span>
+        </div>
+        
+        <form action="{{ route('consultation.store') }}" method="POST">
+            @csrf
 
-    <div class="mb-4">
-        <h2 class="fw-bold text-dark mb-1">Active Consultation Session Room</h2>
-        <p class="text-secondary mb-0 small">Input clinical findings, assessment metrics, and prescription metrics below.</p>
+            <h4 class="mb-3 text-primary fw-semibold">Patient Basic Information</h4>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label for="first_name" class="form-label fw-medium text-secondary small">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required placeholder="John">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="last_name" class="form-label fw-medium text-secondary small">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required placeholder="Doe">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="date_of_birth" class="form-label fw-medium text-secondary small">Date of Birth</label>
+                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="age" class="form-label fw-medium text-secondary small">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" required min="0" placeholder="25">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="sex" class="form-label fw-medium text-secondary small">Sex</label>
+                    <select class="form-select" id="sex" name="sex" required>
+                        <option value="" disabled selected>Select Sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-medium text-secondary small">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="johndoe@example.com">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="phone_number" class="form-label fw-medium text-secondary small">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" required placeholder="09123456789">
+                </div>
+            </div>
+
+            <input type="hidden" name="consultation_date" value="{{ date('Y-m-d') }}">
+            <input type="hidden" name="consultation_time" value="{{ date('H:i:s') }}">
+
+            <h4 class="mb-3 text-primary fw-semibold">Clinical Examination Records</h4>
+            <div class="mb-3">
+                <label for="symptoms" class="form-label fw-medium text-secondary small">Symptoms / Chief Complaint</label>
+                <textarea class="form-control" id="symptoms" name="symptoms" rows="3" required placeholder="Describe user active medical complaints..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="diagnosis" class="form-label fw-medium text-secondary small">Diagnosis Notes</label>
+                <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" required placeholder="Summary of clinical findings..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="prescription" class="form-label fw-medium text-secondary small">Prescription Plan (Optional)</label>
+                <textarea class="form-control" id="prescription" name="prescription" rows="3" placeholder="List medications, dosage requirements, and follow-ups..."></textarea>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end border-top pt-4">
+                <a href="{{ route('doctor.directory') }}" class="btn btn-light px-4 fw-medium text-secondary">Cancel</a>
+                <button type="submit" class="btn btn-success px-4 fw-medium">Save Consultation Log</button>
+            </div>
+        </form>
     </div>
-
-    <form action="#" method="POST" class="row g-4">
-        @csrf
-
-        <div class="col-lg-8 d-flex flex-column gap-4">
-            
-            <div class="hospital-card">
-                <h4 class="text-uppercase fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 12px;">
-                    <i class="bi bi-file-earmark-text-fill text-primary me-1"></i> Clinical Assessment & Diagnosis Findings
-                </h4>
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-secondary mb-1">Chief Presenting Symptoms</label>
-                    <textarea class="form-control text-sm" name="symptoms" rows="3" placeholder="Patient reports high stress, temporary chest tightness during exertion..." required></textarea>
-                </div>
-                <div>
-                    <label class="form-label small fw-bold text-secondary mb-1">Final Medical Diagnosis / Impression Notes</label>
-                    <textarea class="form-control text-sm" name="diagnosis" rows="3" placeholder="Stage 1 Essential Hypertension. Heart palpitations noted but stable..." required></textarea>
-                </div>
-            </div>
-
-            <div class="hospital-card">
-                <h4 class="text-uppercase fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 12px;">
-                    <i class="bi bi-capsule me-1 text-warning"></i> Rx Medical Prescription Form
-                </h4>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label small fw-bold text-secondary mb-1">Medication Name & Strength</label>
-                        <input type="text" class="form-control text-sm" name="med_name" placeholder="e.g., Losartan 50mg">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label small fw-bold text-secondary mb-1">Frequency</label>
-                        <input type="text" class="form-control text-sm" name="frequency" placeholder="e.g., 1x daily">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label small fw-bold text-secondary mb-1">Duration</label>
-                        <input type="text" class="form-control text-sm" name="duration" placeholder="e.g., 30 Days">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-lg-4 d-flex flex-column gap-4">
-            <div class="hospital-card">
-                <h4 class="text-uppercase fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 12px;">
-                    <i class="bi bi-heart-pulse-fill text-danger me-1"></i> Patient Vitals Signatures
-                </h4>
-                <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-label text-secondary fw-bold" style="font-size: 10px;">BLOOD PRESSURE</label>
-                        <input type="text" class="form-control text-center text-sm fw-bold" name="bp" placeholder="120/80">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label text-secondary fw-bold" style="font-size: 10px;">HEART RATE (BPM)</label>
-                        <input type="text" class="form-control text-center text-sm fw-bold" name="hr" placeholder="78">
-                    </div>
-                </div>
-            </div>
-
-            <div class="hospital-card d-flex flex-column gap-2 text-center">
-                <button type="submit" class="btn btn-blue w-100 py-2.5 rounded-3 fw-bold shadow-sm">
-                    Save Consultation Record
-                </button>
-                <a href="/doctor/dashboard" class="btn btn-light border w-100 py-2 rounded-3 text-secondary small fw-bold">
-                    Cancel Session
-                </a>
-            </div>
-        </div>
-
-    </form>
-
 </div>
 @endsection
