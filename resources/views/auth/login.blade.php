@@ -38,14 +38,17 @@
 
         <div class="form-group">
             <label for="password" class="form-label">Password</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                class="form-control @error('password') is-invalid @enderror"
-                placeholder="Enter your password"
-                required
-            >
+            <div class="password-wrapper">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control @error('password') is-invalid @enderror"
+                    placeholder="Enter your password"
+                    required
+                >
+                <span class="toggle-password" onclick="togglePassword('password')"><i class="fa fa-eye"></i></span>
+            </div>
             @error('password')
                 <span class="error-message">{{ $message }}</span>
             @enderror
@@ -201,5 +204,39 @@
         .form-footer a:hover {
             text-decoration: underline;
         }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .form-control {
+            width: 100%;
+            padding-right: 40px;
+            box-sizing: border-box;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+        }
     </style>
+
+    <script>
+        function togglePassword(fieldId) {
+            const input = document.getElementById(fieldId);
+            const icon = input.closest('.password-wrapper').querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
 @endsection
