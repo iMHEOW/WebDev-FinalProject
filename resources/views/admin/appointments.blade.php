@@ -35,68 +35,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">Amihan R. Batumbakal</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 16, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">11:00 AM</span>
-                            </td>
-                            
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">JD</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. John Martin Doe</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.8rem; border: none; transition: all 0.2s;">Start</a>
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3 text-secondary" style="font-size: 0.8rem; border: none; transition: all 0.2s;">Manage</a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">Pirena S. Cruz</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 17, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">9:00 AM</span>
-                            </td>
-                            
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #e6fcf5; color: #0ca678; font-size: 0.75rem;">F2F Checkup</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">AS</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. Alice Santos</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.8rem; border: none; transition: all 0.2s;">Start</a>
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3 text-secondary" style="font-size: 0.8rem; border: none; transition: all 0.2s;">Manage</a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">Alena T. Trismegistus</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 18, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">2:30 PM</span>
-                            </td>
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">SL</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. Sarah Lopez</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.8rem; border: none; transition: all 0.2s;">Start</a>
-                                <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3 text-secondary" style="font-size: 0.8rem; border: none; transition: all 0.2s;">Manage</a>
-                            </td>
-                        </tr>
+                        @forelse($upcomingAppointments as $appt)
+                            @php
+                                $schedule = \Carbon\Carbon::parse($appt->schedule);
+                                $dateStr = $schedule->format('F j, Y');
+                                $timeStr = $schedule->format('g:i A');
+
+                                $docNameClean = preg_replace('/^(dr\.|dr)\s+/i', '', $appt->doctor_name);
+                                $words = explode(' ', $docNameClean);
+                                $initials = '';
+                                foreach ($words as $w) {
+                                    $initials .= strtoupper(substr($w, 0, 1));
+                                }
+                                $initials = substr($initials, 0, 2);
+                            @endphp
+                            <tr class="border-bottom" style="border-color: #f8fafc !important;">
+                                <td class="py-3 fw-bold text-dark">{{ $appt->patient_name }}</td>
+                                <td class="py-3 text-secondary" style="font-size: 0.9rem;">
+                                    <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">{{ $dateStr }}</span>
+                                    <span class="text-secondary" style="font-size: 0.75rem;">{{ $timeStr }}</span>
+                                </td>
+                                <td class="py-3">
+                                    @if($appt->visit_type == 1)
+                                        <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
+                                    @else
+                                        <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #e6fcf5; color: #0ca678; font-size: 0.75rem;">F2F Checkup</span>
+                                    @endif
+                                </td>
+                                <td class="py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">{{ $initials ?: 'DR' }}</div>
+                                        <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. {{ $docNameClean }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-center">
+                                    <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.8rem; border: none; transition: all 0.2s;">Start</a>
+                                    <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3 text-secondary" style="font-size: 0.8rem; border: none; transition: all 0.2s;">Manage</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-secondary">
+                                    <i class="bi bi-calendar-event fs-2 d-block mb-2 text-muted"></i>
+                                    No upcoming appointments found.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -116,65 +100,57 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">Danaya H. Maria Clara</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 10, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">11:00 AM</span>
-                            </td>
-                            
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">JD</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. John Martin Doe</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                <span class="badge bg-success-subtle text-success fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">Done</span>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">James Bond I. Reyes</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 8, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">9:00 AM</span>
-                            </td>
-                            
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #e6fcf5; color: #0ca678; font-size: 0.75rem;">F2F Checkup</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">AS</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. Alice Santos</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                 <span class="badge bg-danger-subtle text-danger fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">No Show</span>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                            <td class="py-3 fw-bold text-dark">Alena T. Trismegistus</td>
-                            <td class="py-3 text-secondary" style="font-size: 0.9rem;">
-                                <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">June 6, 2026</span>
-                                <span class="text-secondary" style="font-size: 0.75rem;">2:30 PM</span>
-                            </td>
-                            <td class="py-3">
-                                <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">SL</div>
-                                    <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. Sarah Lopez</span>
-                                </div>
-                            </td>
-                            <td class="py-3 text-center">
-                                <span class="badge bg-secondary-subtle text-secondary fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">Cancelled</span>
-                            </td>
-                        </tr>
+                        @forelse($pastAppointments as $appt)
+                            @php
+                                $schedule = \Carbon\Carbon::parse($appt->schedule);
+                                $dateStr = $schedule->format('F j, Y');
+                                $timeStr = $schedule->format('g:i A');
+
+                                $docNameClean = preg_replace('/^(dr\.|dr)\s+/i', '', $appt->doctor_name);
+                                $words = explode(' ', $docNameClean);
+                                $initials = '';
+                                foreach ($words as $w) {
+                                    $initials .= strtoupper(substr($w, 0, 1));
+                                }
+                                $initials = substr($initials, 0, 2);
+                            @endphp
+                            <tr class="border-bottom" style="border-color: #f8fafc !important;">
+                                <td class="py-3 fw-bold text-dark">{{ $appt->patient_name }}</td>
+                                <td class="py-3 text-secondary" style="font-size: 0.9rem;">
+                                    <span class="text-dark d-block fw-medium" style="font-size: 0.85rem;">{{ $dateStr }}</span>
+                                    <span class="text-secondary" style="font-size: 0.75rem;">{{ $timeStr }}</span>
+                                </td>
+                                <td class="py-3">
+                                    @if($appt->visit_type == 1)
+                                        <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.75rem;">Teleconsult</span>
+                                    @else
+                                        <span class="badge rounded-pill px-3 py-1.5 fw-semibold" style="background-color: #e6fcf5; color: #0ca678; font-size: 0.75rem;">F2F Checkup</span>
+                                    @endif
+                                </td>
+                                <td class="py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">{{ $initials ?: 'DR' }}</div>
+                                        <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. {{ $docNameClean }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-center">
+                                    @if($appt->status === 'Completed')
+                                        <span class="badge bg-success-subtle text-success fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">Done</span>
+                                    @elseif($appt->status === 'Cancelled')
+                                        <span class="badge bg-secondary-subtle text-secondary fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">Cancelled</span>
+                                    @else
+                                        <span class="badge bg-danger-subtle text-danger fw-bold px-2.5 py-1.5" style="font-size: 0.75rem;">{{ $appt->status }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-secondary">
+                                    <i class="bi bi-clock-history fs-2 d-block mb-2 text-muted"></i>
+                                    No past appointments found.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

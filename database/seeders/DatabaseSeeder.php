@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->importCsv('appointment.csv', 'appointments');
         $this->importCsv('med_record.csv', 'med_records');
         $this->importCsv('prescriptions.csv', 'prescriptions');
+        $this->importCsv('room.csv', 'rooms');
     }
 
     /**

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('password');
+            $table->string('status')->default('On Duty');
             $table->timestamps();
         });
 
@@ -78,10 +79,19 @@ return new class extends Migration
             $table->integer('refills_left');
             $table->timestamps();
         });
+
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->unsignedBigInteger('room_id')->primary();
+            $table->string('room_number');
+            $table->string('room_type');
+            $table->string('status');
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('rooms');
         Schema::dropIfExists('prescriptions');
         Schema::dropIfExists('med_records');
         Schema::dropIfExists('appointments');

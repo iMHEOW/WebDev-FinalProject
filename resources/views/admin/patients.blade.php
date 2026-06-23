@@ -1,6 +1,7 @@
 @extends('adminLayout')
 
 @section('content')
+<!-- Header Stats -->
 <div class="row g-3 mb-4">
     <div class="col-md-3">
         <div class="card border-0 bg-white p-3 rounded-4 shadow-sm">
@@ -10,7 +11,7 @@
                 </div>
                 <div>
                     <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Total Patients</h6>
-                    <h4 class="fw-bold mb-0 text-dark">1,234</h4>
+                    <h4 class="fw-bold mb-0 text-dark">{{ number_format($totalPatients) }}</h4>
                 </div>
             </div>
         </div>
@@ -23,7 +24,7 @@
                 </div>
                 <div>
                     <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Male Patients</h6>
-                    <h4 class="fw-bold mb-0 text-dark">234</h4>
+                    <h4 class="fw-bold mb-0 text-dark">{{ number_format($malePatients) }}</h4>
                 </div>
             </div>
         </div>
@@ -36,7 +37,7 @@
                 </div>
                 <div>
                     <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Female Patients</h6>
-                    <h4 class="fw-bold mb-0 text-dark">1,000</h4>
+                    <h4 class="fw-bold mb-0 text-dark">{{ number_format($femalePatients) }}</h4>
                 </div>
             </div>
         </div>
@@ -49,13 +50,14 @@
                 </div>
                 <div>
                     <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Appointments</h6>
-                    <h4 class="fw-bold mb-0 text-dark">123</h4>
+                    <h4 class="fw-bold mb-0 text-dark">{{ number_format($consultationsCount) }}</h4>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Main Table Card -->
 <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -64,13 +66,14 @@
         </div>
     </div>
 
+    <!-- Search / Filter Bar -->
     <div class="row g-3 mb-4">
         <div class="col-md-6 col-lg-4">
             <div class="input-group">
                 <span class="input-group-text bg-light border-0" id="search-addon" style="border-radius: 10px 0 0 10px;">
                     <i class="bi bi-search text-secondary"></i>
                 </span>
-                <input type="text" class="form-control bg-light border-0 search-input py-2" placeholder="Search by name, contact, doctor..." aria-describedby="search-addon" style="font-size: 0.85rem; border-radius: 0 10px 10px 0;">
+                <input type="text" id="patientSearch" class="form-control bg-light border-0 py-2" placeholder="Search by name, contact, address..." aria-describedby="search-addon" style="font-size: 0.85rem; border-radius: 0 10px 10px 0;">
             </div>
         </div>
         <div class="col-md-6 col-lg-3 ms-auto">
@@ -81,6 +84,7 @@
             </select>
         </div>
     </div>
+
     <div class="table-responsive">
         <table class="table table-borderless align-middle mb-0">
             <thead>
@@ -93,135 +97,82 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Patient 1 -->
-                <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                    <td class="py-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: linear-gradient(135deg, #ec4899, #db2777);">
-                                AB
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Amihan R. Batumbakal</h6>
-                                <span class="text-secondary" style="font-size: 0.75rem;">ID: #5001</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark fw-semibold" style="font-size: 0.85rem;">09121234567</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">amihan@yahoo.com</span>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark" style="font-size: 0.85rem;">Oct 2, 1990 (35 yrs)</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">La Union, PH</span>
-                        </div>
-                    </td>
-                    <td class="py-3 text-center">
-                        <span class="badge bg-light text-primary fw-semibold px-2.5 py-1.5" style="font-size: 0.75rem;">3 Records</span>
-                    </td>
-                    <td class="py-3 text-end">
-                        <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
-                    </td>
-                </tr>
+                @forelse($patients as $patient)
+                    @php
+                        $words = explode(' ', $patient->name);
+                        $initials = '';
+                        foreach ($words as $w) {
+                            $initials .= strtoupper(substr($w, 0, 1));
+                        }
+                        $initials = substr($initials, 0, 2);
 
-                <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                    <td class="py-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: linear-gradient(135deg, #ec4899, #db2777);">
-                                PC
+                        $dob = \Carbon\Carbon::parse($patient->dob);
+                        $age = $dob->age;
+                        $formattedDob = $dob->format('M j, Y');
+                    @endphp
+                    <tr class="border-bottom patient-row" style="border-color: #f8fafc !important;">
+                        <td class="py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: {{ $patient->gender === 'Female' ? 'linear-gradient(135deg, #ec4899, #db2777)' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }};">
+                                    {{ $initials }}
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-dark patient-name" style="font-size: 0.9rem;">{{ $patient->name }}</h6>
+                                    <span class="text-secondary" style="font-size: 0.75rem;">ID: #{{ $patient->patient_id }}</span>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Pirena S. Cruz</h6>
-                                <span class="text-secondary" style="font-size: 0.75rem;">ID: #5002</span>
+                        </td>
+                        <td class="py-3">
+                            <div class="d-flex flex-column">
+                                <span class="text-dark fw-semibold" style="font-size: 0.85rem;">{{ $patient->phone_no }}</span>
+                                <span class="text-secondary" style="font-size: 0.75rem;">{{ $patient->email }}</span>
                             </div>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark fw-semibold" style="font-size: 0.85rem;">09131234567</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">pirenacruzz@gmail.com</span>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark" style="font-size: 0.85rem;">Feb 9, 1991 (35 yrs)</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">Pampanga, PH</span>
-                        </div>
-                    </td>
-                    <td class="py-3 text-center">
-                        <span class="badge bg-light text-primary fw-semibold px-2.5 py-1.5" style="font-size: 0.75rem;">2 Records</span>
-                    </td>
-                    <td class="py-3 text-end">
-                        <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
-                    </td>
-                </tr>
-                <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                    <td class="py-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: linear-gradient(135deg, #ec4899, #db2777);">
-                                AT
+                        </td>
+                        <td class="py-3">
+                            <div class="d-flex flex-column">
+                                <span class="text-dark" style="font-size: 0.85rem;">{{ $formattedDob }} ({{ $age }} yrs)</span>
+                                <span class="text-secondary" style="font-size: 0.75rem;">{{ $patient->address }}</span>
                             </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Alena T. Trismegistus</h6>
-                                <span class="text-secondary" style="font-size: 0.75rem;">ID: #5003</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark fw-semibold" style="font-size: 0.85rem;">09141234567</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">alenatrismegistus@gmail.com</span>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark" style="font-size: 0.85rem;">Nov 17, 1996 (29 yrs)</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">Cainta, PH</span>
-                        </div>
-                    </td>
-                    <td class="py-3 text-center">
-                        <span class="badge bg-light text-primary fw-semibold px-2.5 py-1.5" style="font-size: 0.75rem;">1 Record</span>
-                    </td>
-                    <td class="py-3 text-end">
-                        <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
-                    </td>
-                </tr>
-
-                <tr class="border-bottom" style="border-color: #f8fafc !important;">
-                    <td class="py-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: linear-gradient(135deg, #ec4899, #db2777);">
-                                DM
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Danaya H. Maria Clara</h6>
-                                <span class="text-secondary" style="font-size: 0.75rem;">ID: #5004</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark fw-semibold" style="font-size: 0.85rem;">09151234567</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">hotmariaclara@gmail.com</span>
-                        </div>
-                    </td>
-                    <td class="py-3">
-                        <div class="d-flex flex-column">
-                            <span class="text-dark" style="font-size: 0.85rem;">Feb 2, 1985 (41 yrs)</span>
-                            <span class="text-secondary" style="font-size: 0.75rem;">Rodriguez, PH</span>
-                        </div>
-                    </td>
-                    <td class="py-3 text-center">
-                        <span class="badge bg-light text-primary fw-semibold px-2.5 py-1.5" style="font-size: 0.75rem;">2 Records</span>
-                    </td>
-                    <td class="py-3 text-end">
-                        <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
-                    </td>
-                </tr>
+                        </td>
+                        <td class="py-3 text-center">
+                            <span class="badge bg-light text-primary fw-semibold px-2.5 py-1.5" style="font-size: 0.75rem;">
+                                {{ $patient->records_count }} {{ Str::plural('Record', $patient->records_count) }}
+                            </span>
+                        </td>
+                        <td class="py-3 text-end">
+                            <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-secondary">
+                            <i class="bi bi-people fs-2 d-block mb-2 text-muted"></i>
+                            No patients found in database.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('patientSearch');
+    const rows = document.querySelectorAll('.patient-row');
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.toLowerCase().trim();
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 @endsection
