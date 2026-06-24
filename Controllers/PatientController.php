@@ -17,24 +17,26 @@ class PatientController extends Controller{
 
         $dboardUp = DB::table('appointment')
                     ->leftJoin('doctor', 'appointment.doctor_id', '=', 'doctor.doctor_id')
-                    ->leftJoin('visit_type', 'appointment.visit_type', '=', 'visit_type.visit_type')
-                    ->select(DB::raw('DATE(appointment.schedule) as Date'),
+                    ->select('appointment.appointment_id as ID',
+                             DB::raw('DATE(appointment.schedule) as Date'),
                              DB::raw("DATE_FORMAT(appointment.schedule, '%H:%i') as Time"),
+                             'appointment.visit_type as Modality',
                              'doctor.name as Doctor',
                              'doctor.department as Department',
                              'appointment.status as Status')
                     ->where('appointment.patient_id', $patient_id)
+                    ->where('appointment.status', '!=', 'Cancelled')
                     ->where('schedule', '>=', now())
                     ->orderBy('appointment.schedule','asc')
                     ->get();
 
         $dboardPast = DB::table('appointment')
                     ->leftJoin('doctor', 'appointment.doctor_id', '=', 'doctor.doctor_id')
-                    ->leftJoin('visit_type', 'appointment.visit_type', '=', 'visit_type.visit_type')
                     ->select(DB::raw('DATE(appointment.schedule) as Date'),
                              DB::raw("DATE_FORMAT(appointment.schedule, '%H:%i') as Time"),
                              'doctor.name as Doctor',
                              'doctor.department as Department')
+                    ->where('appointment.status', '!=', 'Cancelled')
                     ->where('appointment.patient_id', $patient_id)
                     ->whereBetween('schedule', [now()->subMonth(), now()])
                     ->orderBy('appointment.schedule','desc')
@@ -43,6 +45,7 @@ class PatientController extends Controller{
         $upcomingApp = DB::table('appointment')
                     ->select('appointment_id')
                     ->where('patient_id', $patient_id)
+                    ->where('appointment.status', '!=', 'Cancelled')
                     ->where('schedule', '>=', now())
                     ->count();
 
@@ -58,6 +61,16 @@ class PatientController extends Controller{
                     ->count();
 
         return view('patient.dashboard', compact('patientName', 'dboardUp', 'dboardPast', 'upcomingApp', 'activePre', 'monthRecord', 'patient_id')); 
+    }
+
+
+    public function cancelAppointment(Request $request, $patient_id){
+        DB::table('appointment')
+            ->where('appointment_id', $request->appointment_id)
+            ->where('patient_id', $patient_id) 
+            ->update(['status' => 'Cancelled']);
+
+        return redirect()->back()->with('success', 'Your appointment has been cancelled.');
     }
 
 
@@ -92,6 +105,7 @@ class PatientController extends Controller{
         $conflict = DB::table('appointment')
                 ->where('doctor_id', $request->doctor_id)
                 ->where('schedule', $combinedDateTime)
+                ->where('status', '!=', 'Cancelled')
                 ->exists();
         if ($conflict) {
             return back()
@@ -123,7 +137,8 @@ class PatientController extends Controller{
 
         $bookedDatetimes = DB::table('appointment')
             ->where('doctor_id', $doctorId)
-            ->whereDate('schedule', $date) 
+            ->whereDate('schedule', $date)
+            ->where('status', '!=', 'Cancelled') 
             ->pluck('schedule');
         $bookedTimes = [];
         
@@ -220,7 +235,8 @@ class PatientController extends Controller{
                     ->leftJoin('patient', 'prescription.patient_id', '=', 'patient.patient_id')
                     ->where('prescription.patient_id', $patient_id)
                     ->where('prescription.refills_left', '!=', '0')
-                    ->select('prescription.medication as Medication', 
+                    ->select('prescription.prescription_id as ID',
+                            'prescription.medication as Medication', 
                             'prescription.dosage as Dosage', 
                             'prescription.quantity as Qty',
                             'prescription.instruction as Instruction',
@@ -239,6 +255,27 @@ class PatientController extends Controller{
                     ->get();
 
         return view('patient.prescriptions', compact('patientName', 'activeP', 'pastP', 'activePresc', 'pastPresc', 'patient_id'));
+    }
+
+
+    public function requestRefill(Request $request, $patient_id){
+        
+        $prescriptionId = $request->prescription_id;
+        $medicationN = $request->medication;
+
+        $doctorName = DB::table('prescription')
+                    ->where('prescription.prescription_id', $prescriptionId)
+                    ->join('doctor', 'prescription.doctor_id', '=', 'doctor.doctor_id')
+                    ->value('doctor.name');
+
+        DB::table('refill_request')->insert([
+            'request_date' => now(),
+            'prescription_id' => $prescriptionId,
+            'patient_id' => $patient_id, 
+            'status' => 'Pending'
+        ]);        
+
+        return redirect()->back()->with('success', "Refill request for {$medicationN} has been sent to Dr. {$doctorName}");
     }
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUP Care - Patient Dashboard</title>
+    <title>PUP Care - My Prescriptions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
@@ -69,6 +69,31 @@
             </header>
 
             <main class="flex-grow-1 overflow-auto p-4 p-md-5">
+                @if(session('success'))
+                    <div class="modal fade" id="refillSuccess" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow">
+                                <div class="modal-body text-center p-5">
+                                    <div class="text-success mb-3">
+                                        <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                                    </div>
+                                    <h3 class="fw-bold text-dark mb-2"">Refill Requested!</h3>
+                                    <p class="text-muted mb-4 fs-6">{{ session('success') }}</p>
+                                    <button type="button" class="btn btn-success px-4 fw-semibold" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var myModal = new bootstrap.Modal(document.getElementById('refillSuccess'));
+                            myModal.show();
+                        });
+                    </script>
+                @endif
 
                 <div class="row mb-4">
 
@@ -127,6 +152,17 @@
                                                     <td class="text-nowrap">{{ $row->Qty }}</td>
                                                     <td class="text-start">{{ $row->Instruction }}</td>
                                                     <td class="text-nowrap">{{ $row->{'Refills Left'} }}</td>
+                                                    <td>
+                                                        <form action="{{ route('patient.requestRefill', ['patient' => $patient_id]) }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="prescription_id" value="{{ $row->ID }}">
+                                                            <input type="hidden" name="medication" value="{{ $row->Medication }}">
+                                                            
+                                                            <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 12px;">
+                                                                Ask for Refill
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -179,6 +215,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 </body>
 </html>
 

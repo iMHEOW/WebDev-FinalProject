@@ -67,7 +67,14 @@
 
 
             <main class="flex-grow-1 overflow-auto p-4 p-md-5">
-                <h2><b>Welcome Back!</b></h2>
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+                <h2><b>Welcome back</b>, {{ $patientName }}!</h2>
 
                 <div class="row mt-3 g-4">
                     <div class="col-12 col-lg-9">
@@ -85,9 +92,11 @@
                                             <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
                                                 <th class="pb-3 fw-semibold text-center">Date</th>
                                                 <th class="pb-3 fw-semibold text-center">Time</th>
+                                                <th class="pb-3 fw-semibold text-center">Modality</th>
                                                 <th class="pb-3 fw-semibold text-center">Doctor</th>
                                                 <th class="pb-3 fw-semibold text-center">Department</th>
                                                 <th class="pb-3 fw-semibold text-center">Status</th>
+                                                <th class="pb-3 fw-semibold text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-dark fw-medium" style="font-size: 14px;">
@@ -95,9 +104,27 @@
                                             <tr class="border-bottom text-center">
                                                 <td>{{ $row->Date }}</td>
                                                 <td>{{ $row->Time }}</td>
+                                                <td>{{ $row->Modality }}</td>
                                                 <td>{{ $row->Doctor }}</td>
                                                 <td>{{ $row->Department }}</td>
-                                                <td>{{ $row->Status }}</td>
+                                                <td>
+                                                    <span class="{{ $row->Status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
+                                                        {{ $row->Status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @if($row->Status !== 'Cancelled')
+                                                        <form action="{{ route('patient.cancelAppointment', ['patient' => $patient_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
+                                                            @csrf
+                                                            <input type="hidden" name="appointment_id" value="{{ $row->ID }}">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold" style="font-size: 13px;">
+                                                                Cancel
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <span class="text-muted small">Cancelled</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
