@@ -1,7 +1,6 @@
 @extends('adminLayout')
 
 @section('content')
-<!-- Header Stats -->
 <div class="row g-3 mb-4">
     <div class="col-md-3">
         <div class="card border-0 bg-white p-3 rounded-4 shadow-sm">

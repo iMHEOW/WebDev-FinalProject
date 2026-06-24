@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUP Care Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
 
@@ -75,8 +74,6 @@
             </main>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
@@ -128,6 +125,6 @@
     }
     .nav-link-logout:hover {
         background-color: #fff1f2 !important;
-        color: #f43f5e !important;
+        color: #f43e5d !important;
     }
 </style>

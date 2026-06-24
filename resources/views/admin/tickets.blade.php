@@ -44,15 +44,12 @@
             @endphp
 
             <div class="border rounded-4 p-4" style="border-color: #f1f5f9 !important;">
-                {{-- Ticket Header --}}
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 border-bottom pb-3 mb-3" style="border-color: #f1f5f9 !important;">
                     <span class="text-secondary fw-semibold" style="font-size: 0.85rem;">Ticket #{{ $ticket['ticket_id'] }}</span>
                     <span class="text-secondary" style="font-size: 0.8rem;">Detected Automatically</span>
                 </div>
 
-                {{-- Main Row --}}
                 <div class="row g-4 align-items-center">
-                    {{-- Specialist --}}
                     <div class="col-md-3 border-end" style="border-color: #f1f5f9 !important;">
                         <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Specialist</h6>
                         <div class="d-flex align-items-center gap-3 mt-2">
@@ -66,14 +63,12 @@
                         </div>
                     </div>
 
-                    {{-- Overlapping Schedule --}}
                     <div class="col-md-3 border-end" style="border-color: #f1f5f9 !important;">
                         <h6 class="text-secondary mb-1" style="font-size: 0.8rem;">Overlapping Schedule</h6>
                         <h6 class="fw-bold text-dark mt-2 mb-1" style="font-size: 0.85rem;">{{ $dateStr }}</h6>
                         <span class="text-danger fw-semibold" style="font-size: 0.8rem;"><i class="bi bi-clock"></i> {{ $startTimeStr }} – {{ $endTimeStr }}</span>
                     </div>
 
-                    {{-- Conflicting Bookings --}}
                     <div class="col-md-4 border-end" style="border-color: #f1f5f9 !important;">
                         <h6 class="text-secondary mb-2" style="font-size: 0.8rem;">Conflicting Bookings ({{ count($ticket['bookings']) }} Patients)</h6>
                         <div class="d-flex flex-column gap-2">
@@ -90,7 +85,6 @@
                         </div>
                     </div>
 
-                    {{-- Action Buttons --}}
                     <div class="col-md-2 text-end">
                         <div class="d-flex flex-column gap-2">
                             <button class="btn btn-primary btn-sm fw-semibold rounded-3 py-2 d-flex align-items-center gap-2 justify-content-center"
@@ -109,7 +103,6 @@
                     </div>
                 </div>
 
-                {{-- Reschedule Collapse Panel --}}
                 <div class="collapse mt-4" id="reschedule-{{ $idx }}">
                     <div class="border rounded-3 p-3" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
                         <h6 class="fw-bold text-dark mb-3" style="font-size: 0.82rem;"><i class="bi bi-calendar-check me-1 text-primary"></i>Set New Schedule for Each Patient</h6>
@@ -150,7 +143,6 @@
                     </div>
                 </div>
 
-                {{-- Reassign Collapse Panel --}}
                 <div class="collapse mt-4" id="reassign-{{ $idx }}">
                     <div class="border rounded-3 p-3" style="background-color: #f8fafc; border-color: #e2e8f0 !important;">
                         <h6 class="fw-bold text-dark mb-3" style="font-size: 0.82rem;"><i class="bi bi-person-check me-1 text-secondary"></i>Reassign Each Patient to a Different Doctor</h6>

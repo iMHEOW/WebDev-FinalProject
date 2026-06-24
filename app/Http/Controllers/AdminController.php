@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         $patientsCount = DB::table('patients')->count();
         $doctorsCount = DB::table('doctors')->count();
         $appointmentsCount = DB::table('appointments')->count();
@@ -34,12 +36,11 @@ class AdminController extends Controller
         ));
     }
 
-    public function doctors(){
+    public function doctors()
+    {
         $totalDoctors = DB::table('doctors')->count();
         $pendingAppointments = DB::table('appointments')->where('status', 'Pending')->count();
         $departmentsCount = DB::table('doctors')->distinct('department')->count('department');
-        
-        
         $onDutyToday = DB::table('doctors')->where('status', 'On Duty')->count();
 
         $doctors = DB::table('doctors as d')
@@ -75,22 +76,34 @@ class AdminController extends Controller
         ));
     }
 
-    public function createDoctor(){
+    public function createDoctor()
+    {
         return view('admin.doctor_create');
     }
 
-    public function storeDoctor(Request $request){
+    public function storeDoctor(Request $request)
+    {
+        $validated = $request->validate([
+            'name'           => 'required|string|max:255',
+            'specialization' => 'required|string|max:255',
+            'department'     => 'required|string|max:255',
+            'phone'          => 'required|string|max:20',
+            'email'          => 'required|email|max:255|unique:doctors,email',
+            'password'       => 'required|string|min:6',
+            'status'         => 'nullable|string|in:On Duty,On Leave',
+        ]);
+
         $nextId = DB::table('doctors')->max('doctor_id') + 1;
 
         DB::table('doctors')->insert([
             'doctor_id'      => $nextId,
-            'name'           => $request->name,
-            'specialization' => $request->specialization,
-            'department'     => $request->department,
-            'phone'          => $request->phone,
-            'email'          => $request->email,
-            'password'       => bcrypt($request->password),
-            'status'         => $request->status ?? 'On Duty',
+            'name'           => $validated['name'],
+            'specialization' => $validated['specialization'],
+            'department'     => $validated['department'],
+            'phone'          => $validated['phone'],
+            'email'          => $validated['email'],
+            'password'       => bcrypt($validated['password']),
+            'status'         => $validated['status'] ?? 'On Duty',
             'created_at'     => now(),
             'updated_at'     => now(),
         ]);
@@ -98,16 +111,22 @@ class AdminController extends Controller
         return redirect()->route('admin.doctors')->with('success', 'Doctor added successfully!');
     }
 
-    public function updateDoctorStatus(Request $request, $id){
+    public function updateDoctorStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:On Duty,On Leave',
+        ]);
+
         DB::table('doctors')->where('doctor_id', $id)->update([
-            'status'     => $request->status,
+            'status'     => $validated['status'],
             'updated_at' => now(),
         ]);
 
         return redirect()->route('admin.doctors')->with('success', 'Doctor status updated.');
     }
 
-    public function patients(){
+    public function patients()
+    {
         $totalPatients = DB::table('patients')->count();
         $malePatients = DB::table('patients')->where('gender', 'Male')->count();
         $femalePatients = DB::table('patients')->where('gender', 'Female')->count();
@@ -135,7 +154,8 @@ class AdminController extends Controller
         ));
     }
 
-    public function patientProfile($id){
+    public function patientProfile($id)
+    {
         $patient = DB::table('patients')->where('patient_id', $id)->firstOrFail();
 
         $appointments = DB::table('appointments as a')
@@ -173,7 +193,8 @@ class AdminController extends Controller
         ));
     }
 
-    public function appointments(){
+    public function appointments()
+    {
         $upcomingAppointments = DB::table('appointments as a')
             ->join('patients as p', 'a.patient_id', '=', 'p.patient_id')
             ->join('doctors as d', 'a.doctor_id', '=', 'd.doctor_id')
@@ -193,7 +214,8 @@ class AdminController extends Controller
         return view('admin.appointments', compact('upcomingAppointments', 'pastAppointments'));
     }
 
-    public function tickets(){
+    public function tickets()
+    {
         $conflicts = DB::table('appointments as a')
             ->join('doctors as d', 'a.doctor_id', '=', 'd.doctor_id')
             ->select('a.doctor_id', 'a.schedule', 'd.name as doctor_name', 'd.department')
@@ -228,11 +250,19 @@ class AdminController extends Controller
         return view('admin.tickets', compact('ticketReports', 'allDoctors'));
     }
 
-    public function rescheduleAppointments(Request $request){
-        $apptIds  = $request->input('appt_ids', []);
-        $dates    = $request->input('dates', []);
-        $times    = $request->input('times', []);
-        $vtypes   = $request->input('visit_types', []);
+    public function rescheduleAppointments(Request $request)
+    {
+        $validated = $request->validate([
+            'appt_ids'    => 'required|array',
+            'dates'       => 'required|array',
+            'times'       => 'required|array',
+            'visit_types' => 'required|array',
+        ]);
+
+        $apptIds  = $validated['appt_ids'];
+        $dates    = $validated['dates'];
+        $times    = $validated['times'];
+        $vtypes   = $validated['visit_types'];
 
         foreach ($apptIds as $i => $apptId) {
             $date = $dates[$i] ?? null;
@@ -249,9 +279,15 @@ class AdminController extends Controller
         return redirect()->route('admin.tickets')->with('success', 'Appointments rescheduled successfully!');
     }
 
-    public function reassignAppointments(Request $request){
-        $apptIds   = $request->input('appt_ids', []);
-        $doctorIds = $request->input('doctor_ids', []);
+    public function reassignAppointments(Request $request)
+    {
+        $validated = $request->validate([
+            'appt_ids'   => 'required|array',
+            'doctor_ids' => 'required|array',
+        ]);
+
+        $apptIds   = $validated['appt_ids'];
+        $doctorIds = $validated['doctor_ids'];
 
         foreach ($apptIds as $i => $apptId) {
             $newDoctor = $doctorIds[$i] ?? null;

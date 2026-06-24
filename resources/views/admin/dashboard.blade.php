@@ -71,7 +71,6 @@
             <div class="d-flex flex-column gap-3">
                 @forelse($recentAppointments as $app)
                     @php
-                        // Get initials from doctor name
                         $words = explode(' ', preg_replace('/^(dr\.|dr)\s+/i', '', $app->doctor_name));
                         $initials = '';
                         foreach ($words as $w) {
@@ -79,7 +78,6 @@
                         }
                         $initials = substr($initials, 0, 2);
 
-                        // Parse schedule
                         $dateObj = \Carbon\Carbon::parse($app->schedule);
                         $formattedDate = $dateObj->isToday() ? 'Today' : $dateObj->format('M d, Y');
                         $formattedTime = $dateObj->format('h:i A');

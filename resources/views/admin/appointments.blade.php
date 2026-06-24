@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
-    <!-- Tab Navigation -->
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <ul class="nav nav-pills gap-2" id="appointmentTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -19,9 +18,7 @@
         <span class="text-secondary fw-medium" style="font-size: 0.8rem;">Sorted by Schedule Date</span>
     </div>
 
-    <!-- Tab Contents -->
     <div class="tab-content" id="appointmentTabsContent">
-        <!-- Upcoming Tab -->
         <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
             <div class="table-responsive">
                 <table class="table table-borderless align-middle mb-0">
@@ -31,7 +28,6 @@
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Date / Time</th>
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Type</th>
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Assigned Doctor</th>
-                        
                         </tr>
                     </thead>
                     <tbody>
@@ -82,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Past Tab -->
         <div class="tab-pane fade" id="past" role="tabpanel" aria-labelledby="past-tab">
             <div class="table-responsive">
                 <table class="table table-borderless align-middle mb-0">
@@ -155,7 +150,6 @@
 </div>
 
 <style>
-    /* Styling active navigation pills to look like modern tabs */
     #appointmentTabs .nav-link {
         transition: all 0.2s;
     }
