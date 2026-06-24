@@ -31,7 +31,7 @@
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Date / Time</th>
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Type</th>
                             <th class="text-muted fw-bold text-uppercase pb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Assigned Doctor</th>
-                            <th class="text-muted fw-bold text-uppercase pb-3 text-center" style="font-size: 0.75rem; letter-spacing: 0.5px;">Action</th>
+                        
                         </tr>
                     </thead>
                     <tbody>
@@ -67,10 +67,6 @@
                                         <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 28px; height: 28px; font-size: 0.75rem;">{{ $initials ?: 'DR' }}</div>
                                         <span class="fw-semibold text-secondary" style="font-size: 0.9rem;">Dr. {{ $docNameClean }}</span>
                                     </div>
-                                </td>
-                                <td class="py-3 text-center">
-                                    <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.8rem; border: none; transition: all 0.2s;">Start</a>
-                                    <a href="#" class="btn btn-sm fw-bold px-3 py-1.5 rounded-3 text-secondary" style="font-size: 0.8rem; border: none; transition: all 0.2s;">Manage</a>
                                 </td>
                             </tr>
                         @empty

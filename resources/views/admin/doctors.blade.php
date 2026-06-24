@@ -1,6 +1,11 @@
 @extends('adminLayout')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success rounded-3 py-2 px-3 mb-3 d-flex align-items-center gap-2" style="font-size: 0.85rem;">
+        <i class="bi bi-check-circle-fill text-success"></i> {{ session('success') }}
+    </div>
+@endif
 <div class="row g-3 mb-4">
     <div class="col-md-3">
         <div class="card border-0 bg-white p-3 rounded-4 shadow-sm">
@@ -62,9 +67,11 @@
             <h5 class="fw-bold mb-1 text-dark" style="letter-spacing: -0.5px;">Doctors Directory</h5>
             <p class="text-secondary mb-0" style="font-size: 0.85rem;">Manage active doctor accounts grouped by their specialty and department</p>
         </div>
+        <a href="{{ route('admin.doctor.create') }}" class="btn btn-sm fw-semibold px-3 py-2 rounded-3 d-flex align-items-center gap-2" style="background-color: #0f5cfd; color: #fff; font-size: 0.82rem; border: none; text-decoration: none;">
+            <i class="bi bi-person-plus-fill"></i> Add Doctor
+        </a>
     </div>
 
-    <!-- Search & Department Filters -->
     <div class="row g-3 mb-4">
         <div class="col-md-6 col-lg-4">
             <div class="input-group">
@@ -84,7 +91,6 @@
         </div>
     </div>
 
-    <!-- Grouped Doctors Container -->
     <div id="doctorsContainer">
         @forelse($groupedDoctors as $dept => $docs)
             @php
@@ -113,34 +119,19 @@
                                 <th class="text-muted fw-bold text-uppercase pb-2" style="font-size: 0.7rem; width: 40%;">Doctor</th>
                                 <th class="text-muted fw-bold text-uppercase pb-2" style="font-size: 0.7rem; width: 25%;">Contact Info</th>
                                 <th class="text-muted fw-bold text-uppercase pb-2 text-center" style="font-size: 0.7rem; width: 15%;">Patients</th>
-                                <th class="text-muted fw-bold text-uppercase pb-2 text-center" style="font-size: 0.7rem; width: 10%;">Status</th>
-                                <th class="text-muted fw-bold text-uppercase pb-2 text-end" style="font-size: 0.7rem; width: 10%;">Action</th>
+                                <th class="text-muted fw-bold text-uppercase pb-2 text-center" style="font-size: 0.7rem; width: 20%;">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($docs as $doc)
-                                @php
-                                    // Initials
-                                    $words = explode(' ', preg_replace('/^(dr\.|dr)\s+/i', '', $doc->name));
-                                    $initials = '';
-                                    foreach ($words as $w) {
-                                        $initials .= strtoupper(substr($w, 0, 1));
-                                    }
-                                    $initials = substr($initials, 0, 2);
-
-                                    // Status styling
-                                    $status = $doc->status;
-                                    $statusBg = ($status === 'On Duty') ? '#ecfdf5' : '#fff1f2';
-                                    $statusColor = ($status === 'On Duty') ? '#10b981' : '#f43f5e';
-                                @endphp
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 32px; height: 32px; font-size: 0.8rem; background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
-                                                {{ $initials ?: 'DR' }}
+                                                {{ $doc->initials }}
                                             </div>
                                             <div>
-                                                <h6 class="fw-bold mb-0 text-dark doctor-name" style="font-size: 0.85rem;">Dr. {{ preg_replace('/^(dr\.|dr)\s+/i', '', $doc->name) }}</h6>
+                                                <h6 class="fw-bold mb-0 text-dark doctor-name" style="font-size: 0.85rem;">Dr. {{ $doc->clean_name }}</h6>
                                                 <span class="text-secondary" style="font-size: 0.7rem;">ID: #{{ $doc->doctor_id }}</span>
                                             </div>
                                         </div>
@@ -153,10 +144,14 @@
                                         <span class="badge bg-light text-dark fw-semibold px-2 py-1" style="font-size: 0.7rem;">{{ $doc->patient_count }} {{ Str::plural('Patient', $doc->patient_count) }}</span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge rounded-pill px-2 py-1 fw-semibold" style="background-color: {{ $statusBg }}; color: {{ $statusColor }}; font-size: 0.7rem;">{{ $status }}</span>
-                                    </td>
-                                    <td class="text-end">
-                                        <button class="btn btn-light btn-sm rounded-3 px-2.5 py-1 text-secondary" style="font-size: 0.7rem; border: 1px solid #e2e8f0;">Manage</button>
+                                        <form action="{{ route('admin.doctor.updateStatus', $doc->doctor_id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="status" onchange="this.form.submit()" class="form-select form-select-sm fw-semibold border-0 text-center" style="font-size: 0.72rem; border-radius: 20px; cursor: pointer; background-color: {{ $doc->status_bg }}; color: {{ $doc->status_color }}; width: auto; margin: 0 auto;">
+                                                <option value="On Duty" {{ $doc->status === 'On Duty' ? 'selected' : '' }}>On Duty</option>
+                                                <option value="On Leave" {{ $doc->status === 'On Leave' ? 'selected' : '' }}>On Leave</option>
+                                            </select>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -173,7 +168,6 @@
     </div>
 </div>
 
-<!-- Vanilla JS Filter & Search Logic -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('doctorSearch');

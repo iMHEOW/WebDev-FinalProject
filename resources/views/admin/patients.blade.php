@@ -57,7 +57,6 @@
     </div>
 </div>
 
-<!-- Main Table Card -->
 <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -66,7 +65,6 @@
         </div>
     </div>
 
-    <!-- Search / Filter Bar -->
     <div class="row g-3 mb-4">
         <div class="col-md-6 col-lg-4">
             <div class="input-group">
@@ -140,7 +138,7 @@
                             </span>
                         </td>
                         <td class="py-3 text-end">
-                            <button class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0;">View File</button>
+                            <a href="{{ route('admin.patient.profile', $patient->patient_id) }}" class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fw-semibold text-secondary" style="font-size: 0.75rem; border: 1px solid #e2e8f0; text-decoration: none;">View File</a>
                         </td>
                     </tr>
                 @empty

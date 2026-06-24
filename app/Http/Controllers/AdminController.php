@@ -47,7 +47,22 @@ class AdminController extends Controller
                 'd.*',
                 DB::raw('(SELECT COUNT(DISTINCT patient_id) FROM appointments WHERE doctor_id = d.doctor_id) as patient_count')
             )
-            ->get();
+            ->get()
+            ->map(function ($doc) {
+                $doc->clean_name = preg_replace('/^(dr\.|dr)\s+/i', '', $doc->name);
+                
+                $words = explode(' ', $doc->clean_name);
+                $initials = '';
+                foreach ($words as $w) {
+                    $initials .= strtoupper(substr($w, 0, 1));
+                }
+                $doc->initials = substr($initials, 0, 2) ?: 'DR';
+                
+                $doc->status_bg = ($doc->status === 'On Duty') ? '#ecfdf5' : '#fff1f2';
+                $doc->status_color = ($doc->status === 'On Duty') ? '#10b981' : '#f43f5e';
+                
+                return $doc;
+            });
 
         $groupedDoctors = $doctors->groupBy('department');
 
@@ -59,6 +74,39 @@ class AdminController extends Controller
             'groupedDoctors'
         ));
     }
+
+    public function createDoctor(){
+        return view('admin.doctor_create');
+    }
+
+    public function storeDoctor(Request $request){
+        $nextId = DB::table('doctors')->max('doctor_id') + 1;
+
+        DB::table('doctors')->insert([
+            'doctor_id'      => $nextId,
+            'name'           => $request->name,
+            'specialization' => $request->specialization,
+            'department'     => $request->department,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'password'       => bcrypt($request->password),
+            'status'         => $request->status ?? 'On Duty',
+            'created_at'     => now(),
+            'updated_at'     => now(),
+        ]);
+
+        return redirect()->route('admin.doctors')->with('success', 'Doctor added successfully!');
+    }
+
+    public function updateDoctorStatus(Request $request, $id){
+        DB::table('doctors')->where('doctor_id', $id)->update([
+            'status'     => $request->status,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('admin.doctors')->with('success', 'Doctor status updated.');
+    }
+
     public function patients(){
         $totalPatients = DB::table('patients')->count();
         $malePatients = DB::table('patients')->where('gender', 'Male')->count();
@@ -86,6 +134,45 @@ class AdminController extends Controller
             'patients'
         ));
     }
+
+    public function patientProfile($id){
+        $patient = DB::table('patients')->where('patient_id', $id)->firstOrFail();
+
+        $appointments = DB::table('appointments as a')
+            ->join('doctors as d', 'a.doctor_id', '=', 'd.doctor_id')
+            ->select('a.*', 'd.name as doctor_name', 'd.specialization')
+            ->where('a.patient_id', $id)
+            ->orderBy('a.schedule', 'desc')
+            ->get();
+
+        $medRecords = DB::table('med_records as m')
+            ->join('doctors as d', 'm.doctor_id', '=', 'd.doctor_id')
+            ->select('m.*', 'd.name as doctor_name', 'd.specialization')
+            ->where('m.patient_id', $id)
+            ->orderBy('m.date', 'desc')
+            ->get();
+
+        $prescriptions = DB::table('prescriptions as pr')
+            ->join('doctors as d', 'pr.doctor_id', '=', 'd.doctor_id')
+            ->select('pr.*', 'd.name as doctor_name')
+            ->where('pr.patient_id', $id)
+            ->get();
+
+        $totalAppointments = $appointments->count();
+        $completedAppointments = $appointments->where('status', 'Completed')->count();
+        $pendingAppointments = $appointments->where('status', 'Pending')->count();
+
+        return view('admin.patient_profile', compact(
+            'patient',
+            'appointments',
+            'medRecords',
+            'prescriptions',
+            'totalAppointments',
+            'completedAppointments',
+            'pendingAppointments'
+        ));
+    }
+
     public function appointments(){
         $upcomingAppointments = DB::table('appointments as a')
             ->join('patients as p', 'a.patient_id', '=', 'p.patient_id')
@@ -110,28 +197,72 @@ class AdminController extends Controller
         $conflicts = DB::table('appointments as a')
             ->join('doctors as d', 'a.doctor_id', '=', 'd.doctor_id')
             ->select('a.doctor_id', 'a.schedule', 'd.name as doctor_name', 'd.department')
+            ->where('a.status', 'Pending')
             ->groupBy('a.doctor_id', 'a.schedule', 'd.name', 'd.department')
             ->havingRaw('COUNT(a.appointment_id) > 1')
             ->get();
 
         $ticketReports = [];
-        foreach ($conflicts as $index => $conflict) {
+        $ticketNum = 101;
+        foreach ($conflicts as $conflict) {
             $bookings = DB::table('appointments as a')
                 ->join('patients as p', 'a.patient_id', '=', 'p.patient_id')
-                ->select('p.name as patient_name', 'a.visit_type')
+                ->select('a.appointment_id', 'p.name as patient_name', 'a.visit_type', 'a.schedule')
                 ->where('a.doctor_id', $conflict->doctor_id)
                 ->where('a.schedule', $conflict->schedule)
+                ->where('a.status', 'Pending')
                 ->get();
 
             $ticketReports[] = [
-                'ticket_id' => 'TC-' . (100 + $index + 1),
+                'ticket_id'   => 'TC-' . $ticketNum++,
+                'doctor_id'   => $conflict->doctor_id,
                 'doctor_name' => $conflict->doctor_name,
-                'department' => $conflict->department,
-                'schedule' => $conflict->schedule,
-                'bookings' => $bookings
+                'department'  => $conflict->department,
+                'schedule'    => $conflict->schedule,
+                'bookings'    => $bookings
             ];
         }
 
-        return view('admin.tickets', compact('ticketReports'));
+        $allDoctors = DB::table('doctors')->select('doctor_id', 'name', 'department')->orderBy('name')->get();
+
+        return view('admin.tickets', compact('ticketReports', 'allDoctors'));
+    }
+
+    public function rescheduleAppointments(Request $request){
+        $apptIds  = $request->input('appt_ids', []);
+        $dates    = $request->input('dates', []);
+        $times    = $request->input('times', []);
+        $vtypes   = $request->input('visit_types', []);
+
+        foreach ($apptIds as $i => $apptId) {
+            $date = $dates[$i] ?? null;
+            $time = $times[$i] ?? null;
+            if ($date && $time) {
+                DB::table('appointments')->where('appointment_id', $apptId)->update([
+                    'schedule'   => $date . ' ' . $time . ':00',
+                    'visit_type' => $vtypes[$i] ?? 1,
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.tickets')->with('success', 'Appointments rescheduled successfully!');
+    }
+
+    public function reassignAppointments(Request $request){
+        $apptIds   = $request->input('appt_ids', []);
+        $doctorIds = $request->input('doctor_ids', []);
+
+        foreach ($apptIds as $i => $apptId) {
+            $newDoctor = $doctorIds[$i] ?? null;
+            if ($newDoctor) {
+                DB::table('appointments')->where('appointment_id', $apptId)->update([
+                    'doctor_id'  => $newDoctor,
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.tickets')->with('success', 'Appointments reassigned successfully!');
     }
 }

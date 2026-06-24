@@ -24,8 +24,14 @@ Route::group(['prefix' => 'admin'], function() {
 
    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
    Route::get('/patients', [AdminController::class, 'patients'])->name('admin.patients');
+   Route::get('/patients/{id}', [AdminController::class, 'patientProfile'])->name('admin.patient.profile');
    Route::get('/doctors', [AdminController::class, 'doctors'])->name('admin.doctors');
+   Route::get('/doctors/create', [AdminController::class, 'createDoctor'])->name('admin.doctor.create');
+   Route::post('/doctors', [AdminController::class, 'storeDoctor'])->name('admin.doctor.store');
+   Route::patch('/doctors/{id}/status', [AdminController::class, 'updateDoctorStatus'])->name('admin.doctor.updateStatus');
    Route::get('/appointments', [AdminController::class, 'appointments'])->name('admin.appointments');
    Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
+   Route::post('/tickets/reschedule', [AdminController::class, 'rescheduleAppointments'])->name('admin.ticket.reschedule');
+   Route::post('/tickets/reassign', [AdminController::class, 'reassignAppointments'])->name('admin.ticket.reassign');
 
 });
