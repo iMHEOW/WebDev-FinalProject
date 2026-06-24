@@ -3,99 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUP Care - @yield('title', 'Portal')</title>
+    <title>PUP Care Portal</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="bg-light">
+<body>
 
-    <div class="d-flex vh-100 overflow-hidden">
+    <div class="d-flex" style="height: 100vh; overflow: hidden;">
         
-        <aside class="bg-white border-end d-flex flex-column justify-content-between h-100 flex-shrink-0" style="width: 256px; border-color: #f1f5f9 !important; padding: 24px;">
+        <aside class="bg-white border-end p-4 d-flex flex-column justify-content-between h-100" style="width: 260px; flex-shrink: 0;">
             <div>
-
-                <div class="d-flex align-items-center gap-3 px-2 mb-4">
-                    <div class="bg-primary text-white p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; box-shadow: 0 8px 16px rgba(15, 92, 253, 0.25);">
-                        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="d-flex align-items-center mb-4 px-2">
+                    <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height: 40px;">
+                        <i class="bi bi-heart-pulse-fill fs-5"></i>
                     </div>
-                    <span class="fs-5 fw-bold text-dark" style="letter-spacing: -0.5px;">PUP Care</span>
+                    <span class="fs-5 fw-bold text-dark">PUP Care</span>
                 </div>
 
-                <nav class="d-flex flex-column gap-1">
-                    <p class="fw-bold text-muted text-uppercase px-3 mb-2" style="font-size: 10px; letter-spacing: 0.5px;">Navigation Menu</p>
+                <nav class="nav flex-column gap-1">
+                    <p class="text-uppercase text-muted fw-bold mb-2 px-3" style="font-size: 10px; letter-spacing: 0.5px;">Navigation Menu</p>
                     
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold" style="background-color: #f0f4ff; color: #0f5cfd; font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-
-                        <i class="bi bi-grid fs-6"></i>
-                        <span>Active Dashboard</span>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->routeIs('admin.dashboard') ? 'nav-link-active' : 'nav-link-custom' }}">
+                        <i class="bi bi-grid-1x2-fill me-2"></i> Dashboard
                     </a>
 
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style=" font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-                        <i class="bi bi-person fs-6"></i>
-                        <span>Doctors</span>
+                    <a href="{{ route('admin.patients') }}" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->routeIs('admin.patients') ? 'nav-link-active' : 'nav-link-custom' }}">
+                        <i class="bi bi-people-fill me-2"></i> Patients
                     </a>
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-                        <i class="bi bi-person fs-6"></i>
-                        <span>Patients</span>
+
+                    <a href="{{ route('admin.doctors') }}" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->routeIs('admin.doctors') ? 'nav-link-active' : 'nav-link-custom' }}">
+                        <i class="bi bi-person-fill me-2"></i> Doctors
                     </a>
-                    <a href="#" class="d-flex align-items-center gap-3 px-3 rounded-3 text-decoration-none fw-semibold nav-link-custom" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-                        <i class="bi bi-calendar fs-6"></i>
-                        <span>Appointments</span>
+
+                    <a href="{{ route('admin.appointments') }}" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->routeIs('admin.appointments') ? 'nav-link-active' : 'nav-link-custom' }}">
+                        <i class="bi bi-file-earmark-text-fill me-2"></i> Appointments
+                    </a>
+
+                    <a href="{{ route('admin.tickets') }}" class="nav-link rounded-3 px-3 py-2.5 small {{ request()->routeIs('admin.tickets') ? 'nav-link-active' : 'nav-link-custom' }}">
+                        <i class="bi bi-ticket-detailed-fill me-2"></i> Ticket Reports
                     </a>
                 </nav>
             </div>
 
-            <div class="d-flex flex-column gap-0">
-                <a href="#" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-                    <i class="bi bi-gear fs-6"></i>
-                    <span>Settings</span>
-                </a>
-                <a href="{{ route('logout') }}" class="d-flex align-items-center gap-3 px-4 rounded-3 text-decoration-none fw-semibold nav-link-logout" style="font-size: 0.7rem; padding-top: 8px; padding-bottom: 8px;">
-                    <i class="bi bi-box-arrow-right fs-6"></i>
-                    <span>Log out</span>
+            <div>
+                <a href="{{ route('logout') }}" class="nav-link rounded-3 px-3 py-2.5 small nav-link-logout">
+                    <i class="bi bi-box-arrow-right me-2"></i> Log out
                 </a>
             </div>
         </aside>
 
-        <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden">
+        <div class="flex-grow-1 d-flex flex-column h-100" style="overflow: hidden;">
             
-            <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 flex-shrink-0" style="height: 80px; border-color: #f1f5f9 !important;">
-                <div class="position-relative" style="width: 384px; max-width: 100%;">
-                    <span class="position-absolute top-0 bottom-0 start-0 d-flex align-items-center ps-3 text-muted">
-                        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </span>
-                    <input type="text" placeholder="Search portal metrics..." class="w-100 ps-5 pe-3 py-2 rounded-pill search-input" style="background-color: #f4f7fc; font-size: 0.9rem; outline: none;">
+            <header class="bg-white border-bottom h-20 px-4 d-flex align-items-center justify-content-between" style="height: 80px; flex-shrink: 0;">
+                <div class="input-group" style="width: 350px;">
+                    
                 </div>
 
-                <div class="d-flex align-items-center gap-4">
-               
-                    <button class="position-relative btn-notification">
-                        <span class="position-absolute bg-danger rounded-circle border border-white" style="top: 0; right: 0; width: 8px; height: 8px;"></span>
-                        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </button>
-              
-                    <div class="d-flex align-items-center gap-2 small fw-semibold text-dark">
-                        <div class="rounded-1 d-flex align-items-center justify-content-center text-secondary fw-bold" style="width: 24px; height: 16px; background-color: #e2e8f0; font-size: 8px;">PH</div>
-                        <span>English</span>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <p class="mb-0 fw-bold text-dark small">Admin 1</p>
+                        <p class="mb-0 text-muted small" style="font-size: 11px;">Admin</p>
                     </div>
-                
-                    <div class="d-flex align-items-center gap-3 border-start ps-4" style="border-color: #f1f5f9 !important;">
-                        <div class="text-end">
-                            <p class="small fw-bold text-dark mb-0">User Account</p>
-                            <p class="text-muted mb-0" style="font-size: 0.75rem; font-weight: 500;">Assigned Portal Role</p>
-                        </div>
-                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" style="width: 40px; height: 40px;">
-                            UA
-                        </div>
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
+                        AD
                     </div>
                 </div>
             </header>
 
-            <main class="flex-grow-1 overflow-y-auto" style="padding: 40px;">
+            <main class="flex-grow-1 p-4 bg-light" style="overflow-y: auto;">
                 @yield('content')
             </main>
         </div>
     </div>
-
 </body>
 </html>
 
@@ -104,65 +82,49 @@
         background-color: #f0f4fa;
         color: #475569;
     }
-
     .hospital-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 16px;
         padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-
     .btn-blue {
         background-color: #2563eb;
         color: #ffffff;
         font-weight: 600;
-        padding: 12px 24px;
+        padding: 10px 20px;
         border-radius: 12px;
         text-align: center;
         display: inline-block;
         text-decoration: none;
-        transition: background-color 0.2s;
+        border: none;
     }
-
     .btn-blue:hover {
         background-color: #1d4ed8;
+        color: #ffffff;
     }
-
-    .text-muted {
-        color: #94a3b8;
-        font-size: 12px;
-    }
-
     .nav-link-custom {
-        color: #8f9ca9 !important;
+        color: #64748b !important;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
     }
     .nav-link-custom:hover {
-        background-color: #f8f9fa;
-        color: #212529 !important;
+        background-color: #f0f4ff !important;
+        color: #0f5cfd !important;
+    }
+    .nav-link-active {
+        background-color: #f0f4ff !important;
+        color: #0f5cfd !important;
+        font-weight: 600 !important;
     }
     .nav-link-logout {
-        color: #8f9ca9 !important;
+        color: #64748b !important;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
     }
     .nav-link-logout:hover {
-        background-color: #fff1f2;
-        color: #e11d48 !important;
-    }
-    .btn-notification {
-        color: #8f9ca9;
-        background: none;
-        border: none;
-        padding: 0;
-        transition: color 0.2s;
-    }
-    .btn-notification:hover {
-        color: #475569;
-    }
-    .search-input {
-        border: 1px solid transparent;
-        transition: all 0.2s;
-      }
-    .search-input:focus {
-        background-color: #ffffff !important;
-        border-color: #cbd5e1 !important;
+        background-color: #fff1f2 !important;
+        color: #f43e5d !important;
     }
 </style>
