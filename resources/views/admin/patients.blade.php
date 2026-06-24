@@ -1,4 +1,4 @@
-@extends('adminLayout')
+@extends('admin.adminLayout')
 
 @section('content')
 <div class="row g-3 mb-4">
@@ -110,7 +110,8 @@
                     <tr class="border-bottom patient-row" style="border-color: #f8fafc !important;">
                         <td class="py-3">
                             <div class="d-flex align-items-center gap-3">
-                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm" style="width: 36px; height: 36px; font-size: 0.85rem; background: {{ $patient->gender === 'Female' ? 'linear-gradient(135deg, #ec4899, #db2777)' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }};">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm {{ $patient->gender === 'Female' ? 'bg-female' : 'bg-male' }}" 
+                                    style="width: 36px; height: 36px; font-size: 0.85rem;">
                                     {{ $initials }}
                                 </div>
                                 <div>
@@ -172,4 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<style>
+.bg-female { background: linear-gradient(135deg, #ec4899, #db2777); }
+.bg-male { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+</style>
+
 @endsection

@@ -1,4 +1,4 @@
-@extends('adminLayout')
+@extends('admin.adminLayout')
 
 @section('content')
 <div class="card border-0 bg-white rounded-4 p-4 shadow-sm">

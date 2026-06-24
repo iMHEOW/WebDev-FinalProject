@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Routing\Controller;
 use Carbon\Carbon;
 
 class DoctorController extends Controller
@@ -19,7 +19,7 @@ class DoctorController extends Controller
         ]);
     }
 
-    public function patients()
+    public function patient()
     {
         return view('doctor.patients');
     }
@@ -31,9 +31,9 @@ class DoctorController extends Controller
 
     public function patientDirectory() 
     {
-        $patients = Patient::all(); 
+        $patient = Patient::all(); 
 
-        return view('doctor.directory', compact('patients'));
+        return view('doctor.directory', compact('patient'));
     }
 
     public function storeConsultation(Request $request) 
@@ -61,11 +61,9 @@ class DoctorController extends Controller
     public function showProfile($id)
     {
         $patient = Patient::findOrFail($id);
-        $fullName = $patient->first_name . ' ' . $patient->last_name;
-        
         
         $appointments = DB::select("
-            SELECT * FROM appointments 
+            SELECT * FROM appointment 
             WHERE patient_id = ? 
             ORDER BY appointment_date ASC, appointment_time ASC
         ", [$patient->id]);

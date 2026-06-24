@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody id="directoryTable">
-                    @forelse($patients as $patient)
+                    @forelse($patient as $patient)
                         <tr>
                             <td class="ps-4 py-3">
                                 <div class="d-flex align-items-center">

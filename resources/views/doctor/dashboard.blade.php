@@ -28,8 +28,7 @@
                         <thead class="table-light border-0">
                             <tr class="text-secondary text-uppercase" style="font-size: 11px;">
                                 <th class="border-0 py-3 ps-3">Patient ID</th>
-                                <th class="border-0 py-3">Scheduled Date</th>
-                                <th class="border-0 py-3">Scheduled Time</th>
+                                <th class="border-0 py-3">Schedule</th>
                                 <th class="border-0 py-3">Modality</th>
                                 <th class="border-0 py-3 text-end pe-3">Action</th>
                             </tr>
@@ -41,14 +40,11 @@
                                         Patient #{{ $app->patient_id }}
                                     </td>
                                     <td class="py-3 text-dark fw-medium">
-                                        {{ $app->appointment_date }}
-                                    </td>
-                                    <td class="py-3 text-secondary">
-                                        {{ $app->appointment_time }}
+                                        {{ $app->schedule }}
                                     </td>
                                     <td class="py-3">
                                         <span class="badge bg-info-subtle text-info border border-info-subtle rounded-2 px-2 py-1 fw-bold">
-                                            {{ $app->modality }}
+                                            {{ $app->visit_type }}
                                         </span>
                                     </td>
                                     <td class="py-3 text-end pe-3">

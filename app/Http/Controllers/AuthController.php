@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -15,21 +16,24 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request){
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:6'],
-        ]);
+    public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'doctor') {
+            return redirect()->route('doctor.dashboard');
+        } elseif ($user->role === 'patient') {
+            return redirect()->route('patient.dashboard', ['patient' => $user->id]);
         }
-
-        return back()->withErrors([
-            'email' => 'Email or password is incorrect.',
-        ])->onlyInput('email');
     }
+
+    return back()->withErrors(['email' => 'Invalid credentials.']);
+}
 
     public function showRegister(){
         return view('auth.register');

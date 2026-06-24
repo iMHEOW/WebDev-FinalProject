@@ -8,65 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id('admin_id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamps();
-        });
-
-        Schema::create('doctors', function (Blueprint $table) {
-            $table->unsignedBigInteger('doctor_id')->primary();
-            $table->string('name');
-            $table->string('specialization');
-            $table->string('department');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('password');
-            $table->string('status')->default('On Duty');
-            $table->timestamps();
-        });
-
-        Schema::create('patients', function (Blueprint $table) {
-            $table->unsignedBigInteger('patient_id')->primary();
-            $table->string('name');
-            $table->string('gender');
-            $table->date('dob');
-            $table->string('phone_no');
-            $table->string('address');
-            $table->string('email');
-            $table->string('password');
-            $table->timestamps();
-        });
-
-        Schema::create('visit_types', function (Blueprint $table) {
-            $table->unsignedBigInteger('visit_type')->primary();
-            $table->string('description');
-            $table->timestamps();
-        });
-
-        Schema::create('appointments', function (Blueprint $table) {
-            $table->unsignedBigInteger('appointment_id')->primary();
-            $table->dateTime('schedule');
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('doctor_id');
-            $table->unsignedBigInteger('visit_type');
-            $table->text('symptoms');
-            $table->text('addnotes')->nullable();
-            $table->string('status');
-            $table->timestamps();
-        });
-
-        Schema::create('med_records', function (Blueprint $table) {
-            $table->unsignedBigInteger('record_id')->primary();
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('doctor_id');
-            $table->date('date');
-            $table->string('type');
-            $table->text('summary');
-            $table->timestamps();
-        });
 
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->unsignedBigInteger('prescription_id')->primary();
