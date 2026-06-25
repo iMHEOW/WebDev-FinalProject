@@ -19,7 +19,7 @@ class PatientController extends Controller
             ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.doctor_id')
             ->select('appointments.appointment_id as ID',
                      DB::raw('DATE(appointments.schedule) as Date'),
-                     DB::raw("DATE_FORMAT(appointments.schedule, '%H:%i') as Time"),
+                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as Time"),
                      'appointments.visit_type as Modality',
                      'doctors.name as Doctor',
                      'doctors.department as Department',
@@ -33,7 +33,7 @@ class PatientController extends Controller
         $dboardPast = DB::table('appointments')
             ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.doctor_id')
             ->select(DB::raw('DATE(appointments.schedule) as Date'),
-                     DB::raw("DATE_FORMAT(appointments.schedule, '%H:%i') as Time"),
+                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as Time"),
                      'doctors.name as Doctor',
                      'doctors.department as Department')
             ->where('appointments.status', '!=', 'Cancelled')
