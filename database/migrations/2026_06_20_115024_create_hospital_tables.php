@@ -17,7 +17,7 @@ return new class extends Migration
         });
 
         Schema::create('doctors', function (Blueprint $table) {
-            $table->integer('doctor_id')->primary();
+            $table->id('doctor_id');
             $table->text('name')->nullable();
             $table->text('specialization')->nullable();
             $table->text('department')->nullable();
@@ -67,7 +67,7 @@ return new class extends Migration
         });
 
         Schema::create('appointments', function (Blueprint $table) {
-            $table->integer('appointment_id')->primary();
+            $table->id('appointment_id');
             $table->text('schedule')->nullable();
             $table->integer('patient_id')->nullable();
             $table->integer('doctor_id')->nullable();
@@ -79,7 +79,7 @@ return new class extends Migration
         });
 
         Schema::create('med_records', function (Blueprint $table) {
-            $table->integer('record_id')->primary();
+            $table->id('record_id');
             $table->integer('patient_id')->nullable();
             $table->integer('doctor_id')->nullable();
             $table->text('date')->nullable();
@@ -89,7 +89,7 @@ return new class extends Migration
         });
 
         Schema::create('prescriptions', function (Blueprint $table) {
-            $table->integer('prescription_id')->primary();
+            $table->id('prescription_id');
             $table->integer('patient_id')->nullable();
             $table->integer('doctor_id')->nullable();
             $table->text('medication')->nullable();
@@ -103,7 +103,7 @@ return new class extends Migration
         });
 
         Schema::create('rooms', function (Blueprint $table) {
-            $table->integer('room_id')->primary();
+            $table->id('room_id');
             $table->text('room_number')->nullable();
             $table->text('room_type')->nullable();
             $table->text('status')->nullable();
