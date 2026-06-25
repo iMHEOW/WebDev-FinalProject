@@ -15,7 +15,10 @@
         <button type="submit" class="btn btn-primary">Resend Verification Email</button>
 
         <div class="form-footer">
-            <p><a href="{{ route('logout') }}">Log out</a></p>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-link p-0 m-0 align-baseline text-decoration-none text-danger fw-semibold">Log out</button>
+            </form>
         </div>
     </form>
 @endsection

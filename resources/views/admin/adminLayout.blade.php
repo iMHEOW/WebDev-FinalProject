@@ -45,9 +45,12 @@
             </div>
 
             <div>
-                <a href="{{ route('logout') }}" class="nav-link rounded-3 px-3 py-2.5 small nav-link-logout">
-                    <i class="bi bi-box-arrow-right me-2"></i> Log out
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="nav-link rounded-3 px-3 py-2.5 small nav-link-logout border-0 bg-transparent text-start w-100">
+                        <i class="bi bi-box-arrow-right me-2"></i> Log out
+                    </button>
+                </form>
             </div>
         </aside>
 

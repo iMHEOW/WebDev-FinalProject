@@ -69,7 +69,17 @@ class AuthController extends Controller
 
     public function verifyEmail(EmailVerificationRequest $request){
         $request->fulfill();
-        return redirect()->route('dashboard');
+        $user = Auth::user();
+        if ($user) {
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'doctor') {
+                return redirect()->route('doctor.dashboard');
+            } elseif ($user->role === 'patient') {
+                return redirect()->route('patient.dashboard', ['patient' => $user->id]);
+            }
+        }
+        return redirect()->route('login');
     }
 
     public function resendVerification(Request $request){
