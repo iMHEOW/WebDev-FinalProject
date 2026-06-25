@@ -16,24 +16,30 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    public function login(Request $request){
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role === 'doctor') {
-            return redirect()->route('doctor.dashboard');
-        } elseif ($user->role === 'patient') {
-            return redirect()->route('patient.dashboard', ['patient' => $user->id]);
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            if ($user->role === 'patient' && ! $user->hasVerifiedEmail()) {
+                return redirect()->route('verification.notice');
+            }
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'doctor') {
+                return redirect()->route('doctor.dashboard');
+            } elseif ($user->role === 'patient') {
+                return redirect()->route('patient.dashboard', ['patient' => $user->id]);
+            }
         }
-    }
 
-    return back()->withErrors(['email' => 'Invalid credentials.']);
-}
+        return back()->withErrors(['email' => 'Invalid credentials.']);
+    }
 
     public function showRegister(){
         return view('auth.register');

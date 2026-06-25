@@ -5,6 +5,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\ProfileController;
 
 Route::group(['prefix' => '/'], function() {
 
@@ -58,6 +59,13 @@ Route::prefix('patient/{patient}')->group(function(){
 
     Route::get('/prescriptions', [PatientController::class, 'prescriptions'])->name('patient.prescriptions');
     Route::post('/request-refill', [PatientController::class, 'requestRefill'])->name('patient.requestRefill');
+});
+
+Route::group(['prefix' => 'profile'], function() {
+
+   Route::get('/settings', [ProfileController::class, 'show'])->name('profile.settings');
+   Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
+
 });
 
 Route::prefix('doctor')->group(function () {
