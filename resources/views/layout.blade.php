@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUP Care Portal - @yield('title', 'Dashboard')</title>
+    <title>PUP Care Health Portal - @yield('title', 'Dashboard')</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
         body { background-color: #f0f4fa; color: #475569; }
