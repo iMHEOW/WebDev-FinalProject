@@ -112,8 +112,8 @@
                                         <tbody class="text-dark fw-medium" style="font-size: 14px;">
                                             @foreach($dboardUp as $row)
                                             <tr class="border-bottom text-center">
-                                                <td>{{ $row->Date }}</td>
-                                                <td>{{ $row->Time }}</td>
+                                                <td>{{ $row->date }}</td>
+                                                <td>{{ $row->time }}</td>
                                                 <td>{{ $row->Modality }}</td>
                                                 <td>{{ $row->Doctor }}</td>
                                                 <td>{{ $row->Department }}</td>
@@ -162,8 +162,8 @@
                                         <tbody class="text-dark fw-medium" style="font-size: 14px;">
                                             @foreach($dboardPast as $row)
                                             <tr class="border-bottom text-center">
-                                                <td>{{ $row->Date }}</td>
-                                                <td>{{ $row->Time }}</td>
+                                                <td>{{ $row->date }}</td>
+                                                <td>{{ $row->time }}</td>
                                                 <td>{{ $row->Doctor }}</td>
                                                 <td>{{ $row->Department }}</td>
                                             </tr>
