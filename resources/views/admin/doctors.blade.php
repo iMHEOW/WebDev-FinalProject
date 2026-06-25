@@ -146,7 +146,7 @@
                                     <td class="text-center">
                                         <form action="{{ route('admin.doctor.updateStatus', $doc->doctor_id) }}" method="POST" class="d-inline">
                                             @csrf
-                                            @method('PATCH')
+                                            
                                             <select name="status" onchange="this.form.submit()" class="form-select form-select-sm fw-semibold border-0 text-center" style="font-size: 0.72rem; border-radius: 20px; cursor: pointer; background-color: {{ $doc->status_bg }}; color: {{ $doc->status_color }}; width: auto; margin: 0 auto;">
                                                 <option value="On Duty" {{ $doc->status === 'On Duty' ? 'selected' : '' }}>On Duty</option>
                                                 <option value="On Leave" {{ $doc->status === 'On Leave' ? 'selected' : '' }}>On Leave</option>

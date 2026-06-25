@@ -12,7 +12,6 @@
         @if (session('status') == 'verification-link-sent')
             <div class="alert alert-success">The verification link has been resent.</div>
         @endif
-
         <button type="submit" class="btn btn-primary">Resend Verification Email</button>
 
         <div class="form-footer">

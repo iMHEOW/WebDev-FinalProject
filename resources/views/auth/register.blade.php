@@ -81,7 +81,7 @@
                     placeholder="Enter your password"
                     required
                 >
-                <span class="toggle-password" onclick="togglePassword('password')"><i class="fa fa-eye"></i></span>
+                <span class="toggle-password" onclick="togglePassword('password')"><i class="bi bi-eye"></i></span>
             </div>
         </div>
 
@@ -96,7 +96,7 @@
                     placeholder="Confirm your password"
                     required
                 >
-                <span class="toggle-password" onclick="togglePassword('password_confirmation')"><i class="fa fa-eye"></i></span>
+                <span class="toggle-password" onclick="togglePassword('password_confirmation')"><i class="bi bi-eye"></i></span>
             </div>
         </div>
 

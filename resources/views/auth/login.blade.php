@@ -44,7 +44,7 @@
                     placeholder="Enter your password"
                     required
                 >
-                <span class="toggle-password" onclick="togglePassword('password')"><i class="fa fa-eye"></i></span>
+                <span class="toggle-password" onclick="togglePassword('password')"><i class="bi bi-eye"></i></span>
             </div>
             @error('password')
                 <span class="error-message">{{ $message }}</span>

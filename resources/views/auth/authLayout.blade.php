@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUP Care - @yield('title', 'Login')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
         body {
             display: flex;
@@ -82,13 +81,6 @@
             font-weight: 600;
             color: #333;
         }
-        .form-control {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
         .form-control:focus {
             outline: none;
             border-color: #0f5cfd;
@@ -100,21 +92,6 @@
         .error-message {
             font-size: 12px;
             color: #dc3545;
-        }
-        .alert {
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .alert-danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-        .alert-success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
         }
         .alert ul {
             margin: 0;
@@ -138,19 +115,6 @@
             cursor: pointer;
             font-size: 14px;
             color: #333;
-        }
-        .btn {
-            padding: 10px 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-primary {
-            background-color: #0f5cfd;
-            color: white;
         }
         .btn-primary:hover {
             background-color: #0d4ed1;
@@ -213,10 +177,10 @@
             const icon = input.closest('.password-wrapper').querySelector('i');
             if (input.type === 'password') {
                 input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
             } else {
                 input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
             }
         }
     </script>

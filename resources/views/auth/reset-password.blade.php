@@ -27,7 +27,7 @@
             <label for="password" class="form-label">New Password</label>
             <div class="password-wrapper">
                 <input type="password" id="password" name="password" class="form-control" placeholder="Enter new password" required>
-                <span class="toggle-password" onclick="togglePassword('password')"><i class="fa fa-eye"></i></span>
+                <span class="toggle-password" onclick="togglePassword('password')"><i class="bi bi-eye"></i></span>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             <label for="password_confirmation" class="form-label">Confirm New Password</label>
             <div class="password-wrapper">
                 <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirm new password" required>
-                <span class="toggle-password" onclick="togglePassword('password_confirmation')"><i class="fa fa-eye"></i></span>
+                <span class="toggle-password" onclick="togglePassword('password_confirmation')"><i class="bi bi-eye"></i></span>
             </div>
         </div>
 

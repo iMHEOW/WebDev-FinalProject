@@ -6,14 +6,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DoctorController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::group(['prefix' => '/'], function() {
 
-Route::group(['prefix' => 'user'], function() {
-
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/', [AuthController::class, 'login']);
 
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
@@ -40,7 +36,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/doctors', [AdminController::class, 'doctors'])->name('admin.doctors');
     Route::get('/doctors/create', [AdminController::class, 'createDoctor'])->name('admin.doctor.create');
     Route::post('/doctors', [AdminController::class, 'storeDoctor'])->name('admin.doctor.store');
-    Route::patch('/doctors/{id}/status', [AdminController::class, 'updateDoctorStatus'])->name('admin.doctor.updateStatus');
+    Route::post('/doctors/{id}/status', [AdminController::class, 'updateDoctorStatus'])->name('admin.doctor.updateStatus');
     
     Route::get('/appointments', [AdminController::class, 'appointments'])->name('admin.appointments');
     
