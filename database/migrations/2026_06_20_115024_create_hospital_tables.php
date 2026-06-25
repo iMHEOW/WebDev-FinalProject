@@ -68,22 +68,24 @@ return new class extends Migration
         });
 
         Schema::create('prescriptions', function (Blueprint $table) {
-            $table->id('prescription_id');
-            $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('doctor_id');
-            $table->string('medication');
-            $table->string('dosage');
-            $table->integer('quantity');
-            $table->text('instruction');
-            $table->integer('refills_left');
+            $table->integer('prescription_id')->primary();
+            $table->integer('patient_id')->nullable();
+            $table->integer('doctor_id')->nullable();
+            $table->text('medication')->nullable();
+            $table->text('dosage')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->text('instruction')->nullable();
+            $table->integer('refills_left')->nullable();
+            $table->text('start_date')->nullable();
+            $table->text('end_date')->nullable();
             $table->timestamps();
         });
 
         Schema::create('rooms', function (Blueprint $table) {
-            $table->id('room_id');
-            $table->string('room_number');
-            $table->string('room_type');
-            $table->string('status');
+            $table->integer('room_id')->primary();
+            $table->text('room_number')->nullable();
+            $table->text('room_type')->nullable();
+            $table->text('status')->nullable();
             $table->timestamps();
         });
     }
