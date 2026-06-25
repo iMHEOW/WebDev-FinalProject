@@ -4,12 +4,25 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         DB::table('users')->truncate();
+        DB::table('admins')->truncate();
+        DB::table('doctors')->truncate();
+        DB::table('patients')->truncate();
+        DB::table('visit_types')->truncate();
+        DB::table('appointments')->truncate();
+        DB::table('med_records')->truncate();
+        DB::table('prescriptions')->truncate();
+        DB::table('rooms')->truncate();
+
+        Schema::enableForeignKeyConstraints();
 
         $this->importCsv('admin.csv', 'admins');
 
@@ -43,9 +56,14 @@ class DatabaseSeeder extends Seeder
                 unset($data['role']);
             }
 
+            $patientPassword = null;
             if ($tableName === 'doctors' || $tableName === 'patients') {
                 $rawPassword = $data['password'] ?? 'password123';
                 $data['password'] = bcrypt($rawPassword);
+                if ($tableName === 'patients') {
+                    $patientPassword = $data['password'];
+                    unset($data['password']);
+                }
             }
 
             $data['created_at'] = now();
@@ -54,7 +72,9 @@ class DatabaseSeeder extends Seeder
             DB::table($tableName)->insert($data);
 
             if ($tableName === 'admins') {
+                static $adminIdCounter = 100;
                 DB::table('users')->insert([
+                    'id' => $adminIdCounter++,
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'password' => $data['password'],
@@ -64,7 +84,9 @@ class DatabaseSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
             } elseif ($tableName === 'doctors') {
+                static $doctorIdCounter = 200;
                 DB::table('users')->insert([
+                    'id' => $doctorIdCounter++,
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'password' => $data['password'],
@@ -78,7 +100,7 @@ class DatabaseSeeder extends Seeder
                     'id' => $data['patient_id'],
                     'name' => $data['name'],
                     'email' => $data['email'],
-                    'password' => $data['password'],
+                    'password' => $patientPassword,
                     'role' => 'patient',
                     'email_verified_at' => now(),
                     'created_at' => now(),
