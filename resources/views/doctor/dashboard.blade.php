@@ -5,7 +5,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold text-dark mb-1">Welcome back, Dr. Shanto!</h2>
+            <h2 class="fw-bold text-dark mb-1">Welcome back, {{ Auth::user() ? Auth::user()->name : 'Doctor' }}!</h2>
             <p class="text-secondary mb-0 small">Here is what your medical queue looks like today.</p>
         </div>
         <span class="badge bg-white border text-dark px-3 py-2 rounded-3 fw-bold small">

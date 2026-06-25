@@ -9,59 +9,76 @@ use Illuminate\Routing\Controller;
 class ProfileController extends Controller
 {
 
-public function show()
-{
+    public function show()
+    {
+        
+        $authUser = auth()->user();
+
+        if (!$authUser) {
+            return redirect()->route('login');
+        }
+
+        
+        $user = (object) [
+            'name'               => $authUser->name,
+            'email'              => $authUser->email,
+            'phone'              => '',
+            'role'               => $authUser->role,
+            'blood_type'         => '',
+            'allergies'          => '',
+            'medical_conditions' => '',
+            'birthday'           => '',
+            'age'                => '',
+            'sex'                => '',
+            'specialization'     => '',
+            'license_number'     => '',
+            'availability'       => '',
+            'address'            => '',
+        ];
+
+        if ($authUser->role === 'patient') {
+            $patient = \Illuminate\Support\Facades\DB::table('patients')
+                ->where('email', $authUser->email)
+                ->first();
+            if ($patient) {
+                $user->phone = $patient->phone_no ?? '';
+                $user->sex = $patient->gender ?? '';
+                $user->birthday = $patient->dob ?? '';
+                $user->address = $patient->address ?? '';
+                if ($patient->dob) {
+                    try {
+                        $user->age = \Carbon\Carbon::parse($patient->dob)->age;
+                    } catch (\Exception $e) {
+                        $user->age = '';
+                    }
+                }
+            }
+        } elseif ($authUser->role === 'doctor') {
+            $doctor = \Illuminate\Support\Facades\DB::table('doctors')
+                ->where('email', $authUser->email)
+                ->first();
+            if ($doctor) {
+                $user->phone = $doctor->phone ?? '';
+                $user->specialization = $doctor->specialization ?? '';
+                $user->department = $doctor->department ?? '';
+            }
+        }
+
+        return view('profile.settings', compact('user'));
+    }
+
     
-    $user = (object) [
-        'name'               => 'Juan dela Cruz',
-        'email'              => 'juan@example.com',
-        'phone'              => '09171234567',
-        'role'               => 'patient',
-        'blood_type'         => 'O+',
-        'allergies'          => '',
-        'medical_conditions' => '',
-        'birthday'           => '1990-05-15',
-        'age'                => \Carbon\Carbon::parse('1990-05-15')->age,
-        'sex'                => 'Male',
-        'specialization'     => '',
-        'license_number'     => '',
-        'availability'       => '',
-    ];
-    
-    // uncomment the code below if you want to test the doctor view
 
-    /*
-    $user = (object) [
-        'name'               => 'Juan dela Cruz',
-        'email'              => 'juan@example.com',
-        'phone'              => '09171234567',
-        'role'               => 'doctor',
-        // doctor fields
-        'specialization'     => 'Cardiology',
-        'license_number'     => '0012345',
-        'availability'       => 'Monday-Friday 9AM-5PM',
-        // patient fields (unused but kept to avoid errors)
-        'blood_type'         => '',
-        'allergies'          => '',
-        'medical_conditions' => '',
-    ];
-    */
 
-    return view('profile.settings', compact('user'));
-}
-
-    /**
-     * Update the user's profile
-     */
     public function update(Request $request)
     {
-        // Temporary: disabled while working on UI
+        
         return redirect()->back();
     }
 
-    /**
-     * Validate data based on user role
-     */
+    
+
+
     private function validateByRole($user, Request $request)
     {
         $rules = [
@@ -90,7 +107,7 @@ public function show()
 
         $validated = $request->validate($rules);
 
-        // Hash password if provided, otherwise remove it from validated data
+        
         if (!empty($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
         } else {

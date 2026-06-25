@@ -78,5 +78,7 @@ Route::prefix('doctor')->group(function () {
 
     Route::get('/patient/{id}', [DoctorController::class, 'showProfile'])->name('doctor.patient.profile');
 });
-
+Route::get('/logout', function () {
+    return redirect('/');
+});
 Route::fallback([PatientController::class, 'fallbackPage']);

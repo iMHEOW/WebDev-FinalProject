@@ -22,7 +22,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            /** @var \App\Models\User $user */
             $user = Auth::user();
 
             if ($user->role === 'patient' && ! $user->hasVerifiedEmail()) {

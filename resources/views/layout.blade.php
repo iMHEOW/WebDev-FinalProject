@@ -57,15 +57,32 @@
                     <span class="input-group-text bg-light border-0 text-muted rounded-start-pill ps-3"><i class="bi bi-search"></i></span>
                     <input type="text" placeholder="Search portal metrics..." class="form-control bg-light border-0 rounded-end-pill py-2">
                 </div>
-                <div class="d-flex align-items-center gap-3">
+                <a href="{{ route('profile.settings') }}" class="text-decoration-none d-flex align-items-center gap-3">
+                    @php
+                        $docName = Auth::user() ? Auth::user()->name : 'Doctor';
+                        $words = explode(' ', $docName);
+                        $initials = '';
+                        foreach ($words as $w) {
+                            $initials .= isset($w[0]) ? strtoupper($w[0]) : '';
+                        }
+                        $initials = substr($initials, 0, 2);
+
+                        $specialization = 'Medical Professional';
+                        if (Auth::user() && Auth::user()->role === 'doctor') {
+                            $doctorInfo = DB::table('doctors')->where('email', Auth::user()->email)->first();
+                            if ($doctorInfo && $doctorInfo->specialization) {
+                                $specialization = $doctorInfo->specialization;
+                            }
+                        }
+                    @endphp
                     <div class="text-end">
-                        <p class="mb-0 fw-bold text-dark small">Dr. Shanto</p>
-                        <p class="mb-0 text-muted small" style="font-size: 11px;">Cardiologist</p>
+                        <p class="mb-0 fw-bold text-dark small">{{ $docName }}</p>
+                        <p class="mb-0 text-muted small" style="font-size: 11px;">{{ $specialization }}</p>
                     </div>
                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
-                        DS
+                        {{ $initials }}
                     </div>
-                </div>
+                </a>
             </header>
 
             <main class="flex-grow-1 p-4 bg-light" style="overflow-y: auto;">

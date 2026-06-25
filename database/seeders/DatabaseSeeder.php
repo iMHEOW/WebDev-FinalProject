@@ -9,10 +9,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Import admins first
+        DB::table('users')->truncate();
+
         $this->importCsv('admin.csv', 'admins');
 
-        // Import all CSVs in order (doctors and patients must be seeded first due to foreign relationships!)
         $this->importCsv('doctor.csv', 'doctors');
         $this->importCsv('patient.csv', 'patients');
         $this->importCsv('visit_type.csv', 'visit_types');
@@ -22,9 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->importCsv('room.csv', 'rooms');
     }
 
-    /**
-     * Reusable CSV Import Helper Function
-     */
     private function importCsv(string $filename, string $tableName): void
     {
         $csvPath = database_path($filename);
@@ -39,7 +36,6 @@ class DatabaseSeeder extends Seeder
         while (($row = fgetcsv($csvFile)) !== false) {
             $data = array_combine($headers, $row);
 
-            // Hash passwords for the admins table and strip 'role'
             if ($tableName === 'admins') {
                 if (isset($data['password'])) {
                     $data['password'] = bcrypt($data['password']);
@@ -47,17 +43,48 @@ class DatabaseSeeder extends Seeder
                 unset($data['role']);
             }
 
-            // Set and hash passwords for doctors and patients (defaults to 'password123' if not in CSV)
             if ($tableName === 'doctors' || $tableName === 'patients') {
                 $rawPassword = $data['password'] ?? 'password123';
                 $data['password'] = bcrypt($rawPassword);
             }
 
-            // Add standard Laravel timestamps
             $data['created_at'] = now();
             $data['updated_at'] = now();
 
             DB::table($tableName)->insert($data);
+
+            if ($tableName === 'admins') {
+                DB::table('users')->insert([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'role' => 'admin',
+                    'email_verified_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } elseif ($tableName === 'doctors') {
+                DB::table('users')->insert([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'role' => 'doctor',
+                    'email_verified_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } elseif ($tableName === 'patients') {
+                DB::table('users')->insert([
+                    'id' => $data['patient_id'],
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'role' => 'patient',
+                    'email_verified_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
 
         fclose($csvFile);

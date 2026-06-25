@@ -61,15 +61,24 @@
                     
                 </div>
 
-                <div class="d-flex align-items-center gap-3">
+                <a href="{{ route('profile.settings') }}" class="text-decoration-none d-flex align-items-center gap-3">
+                    @php
+                        $adminName = Auth::user() ? Auth::user()->name : 'Admin Account';
+                        $words = explode(' ', $adminName);
+                        $initials = '';
+                        foreach ($words as $w) {
+                            $initials .= isset($w[0]) ? strtoupper($w[0]) : '';
+                        }
+                        $initials = substr($initials, 0, 2);
+                    @endphp
                     <div class="text-end">
-                        <p class="mb-0 fw-bold text-dark small">Admin 1</p>
-                        <p class="mb-0 text-muted small" style="font-size: 11px;">Admin</p>
+                        <p class="mb-0 fw-bold text-dark small">{{ $adminName }}</p>
+                        <p class="mb-0 text-muted small" style="font-size: 11px;">{{ ucfirst(Auth::user() ? Auth::user()->role : 'Admin') }}</p>
                     </div>
                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
-                        AD
+                        {{ $initials }}
                     </div>
-                </div>
+                </a>
             </header>
 
             <main class="flex-grow-1 p-4 bg-light" style="overflow-y: auto;">

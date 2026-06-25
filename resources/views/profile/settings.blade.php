@@ -7,13 +7,13 @@
     <div class="col-12 col-lg-8">
         <div class="hospital-card d-flex flex-column h-100">
             
-            <!-- Page Title -->
+            
             <div class="mb-4">
                 <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Profile Settings</h3>
                 <p class="text-muted small">Update your personal and account information</p>
             </div>
 
-            <!-- Success Message -->
+            
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
@@ -21,7 +21,7 @@
                 </div>
             @endif
 
-            <!-- Error Messages -->
+            
             @if ($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Please fix the following errors:</strong>
@@ -34,11 +34,11 @@
                 </div>
             @endif
 
-            <!-- Profile Form -->
+            
             <form action="{{ route('profile.update') }}" method="POST">
                 @csrf
 
-                <!-- Personal Information Section -->
+                
                 <div class="mb-5">
                     <h5 class="fw-bold text-dark mb-3">Personal Information</h5>
                     
@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <!-- Role-Specific Information -->
+                
                 @if ($user->role === 'patient')
                     <div class="mb-5">
                         <h5 class="fw-bold text-dark mb-3">Medical Information</h5>
@@ -93,7 +93,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Add after the blood_type col --}}
+                            
 
                         <div class="col-12 col-md-6">
                             <label for="sex" class="form-label fw-semibold text-dark">Sex</label>
@@ -170,7 +170,7 @@
                     </div>
                 @endif
 
-                <!-- Security Section -->
+                
                 <div class="mb-5">
                     <h5 class="fw-bold text-dark mb-3">Security Settings</h5>
                     
@@ -191,7 +191,7 @@
                     </div>
                 </div>
 
-                <!-- Form Actions -->
+                
                 <div class="d-flex gap-2 justify-content-end">
                     <a href="javascript:window.history.back()" class="btn btn-outline-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Save Changes</button>

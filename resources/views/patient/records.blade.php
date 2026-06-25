@@ -53,15 +53,24 @@
             <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 px-md-5 flex-shrink-0" style="height: 80px;">
                 <div class="position-relative" style="width: 400px;"> </div>
                 <div class="d-flex align-items-center gap-4">
-                    <div class="d-flex align-items-center gap-3 border-start ps-4">
+                    <a href="{{ route('profile.settings') }}" class="text-decoration-none d-flex align-items-center gap-3 border-start ps-4">
+                        @php
+                            $patName = Auth::user() ? Auth::user()->name : ($patientName ?? 'Patient');
+                            $words = explode(' ', $patName);
+                            $initials = '';
+                            foreach ($words as $w) {
+                                $initials .= isset($w[0]) ? strtoupper($w[0]) : '';
+                            }
+                            $initials = substr($initials, 0, 2);
+                        @endphp
                         <div class="text-end">
-                            <p class="mb-0 small fw-bold text-dark lh-1">{{ $patientName }}</p>
+                            <p class="mb-0 small fw-bold text-dark lh-1">{{ $patName }}</p>
                             <p class="mb-0 text-muted fw-medium" style="font-size: 12px;">Patient</p>
                         </div>
-                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px;">
-                            <i class="bi bi-person fs-4"></i>
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
+                            {{ $initials }}
                         </div>
-                    </div>
+                    </a>
                 </div>
             </header>
 

@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('medical_records', function (Blueprint $table) {
             $table->id();
-            $table->integer('patient_id'); // Links to the user row
+            $table->integer('patient_id'); 
             $table->string('age');
-            $table->string('condition_summary'); // e.g., "Hypertension"
-            $table->text('consultation_notes'); // Long doctor text
-            $table->text('prescription')->nullable(); // Meds given
+            $table->string('condition_summary'); 
+            $table->text('consultation_notes'); 
+            $table->text('prescription')->nullable(); 
             $table->timestamps();
         });
     }
