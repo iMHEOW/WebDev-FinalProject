@@ -61,7 +61,7 @@
             <label for="remember">Remember me</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Sign In</button>
+        <button type="submit" class="btn btn-primary">Log In</button>
 
         <div class="form-footer">
             <p><a href="{{ route('password.request') }}">Forgot your password?</a></p>
