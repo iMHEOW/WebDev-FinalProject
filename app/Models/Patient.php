@@ -19,6 +19,17 @@ class Patient extends Model
         'phone_number',
         'symptoms',
         'diagnosis',
-        'prescription'
+        'prescription',
+        'name',
+        'gender',
+        'dob',
+        'phone_no',
+        'address',
+        'patient_id',
+        'blood_type',
+        'allergies',
+        'medical_conditions',
+        'consultation_date',
+        'consultation_time'
     ];
 }

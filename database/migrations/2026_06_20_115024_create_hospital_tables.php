@@ -25,17 +25,38 @@ return new class extends Migration
             $table->text('email')->nullable();
             $table->text('password')->nullable();
             $table->text('status')->nullable();
+            $table->text('license_number')->nullable();
+            $table->text('availability')->nullable();
             $table->timestamps();
         });
 
         Schema::create('patients', function (Blueprint $table) {
-            $table->integer('patient_id')->primary();
+            $table->id(); // Eloquent ID
+            $table->integer('patient_id')->nullable();
             $table->text('name')->nullable();
             $table->text('gender')->nullable();
             $table->text('dob')->nullable();
             $table->text('phone_no')->nullable();
             $table->text('address')->nullable();
             $table->text('email')->nullable();
+
+            // Profile Settings Fields
+            $table->text('blood_type')->nullable();
+            $table->text('allergies')->nullable();
+            $table->text('medical_conditions')->nullable();
+
+            // Doctor Consultation Fields
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('sex')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->text('symptoms')->nullable();
+            $table->text('diagnosis')->nullable();
+            $table->text('prescription')->nullable();
+            $table->date('consultation_date')->nullable();
+            $table->time('consultation_time')->nullable();
             $table->timestamps();
         });
 

@@ -44,11 +44,11 @@
                                     </td>
                                     <td class="py-3">
                                         <span class="badge bg-info-subtle text-info border border-info-subtle rounded-2 px-2 py-1 fw-bold">
-                                            {{ $app->visit_type }}
+                                             {{ $app->visit_type == 1 ? 'In-Person' : ($app->visit_type == 2 ? 'Teleconsult' : $app->visit_type) }}
                                         </span>
                                     </td>
                                     <td class="py-3 text-end pe-3">
-                                        <a href="/doctor/patients" class="btn btn-sm btn-outline-primary rounded-3 px-3 fw-bold">Open Chart</a>
+                                        <a href="{{ route('doctor.patient.profile', $app->patient_id) }}" class="btn btn-sm btn-outline-primary rounded-3 px-3 fw-bold">Open Chart</a>
                                     </td>
                                 </tr>
                             @endforeach

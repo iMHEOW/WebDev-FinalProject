@@ -72,8 +72,62 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        $authUser = auth()->user();
+        if (!$authUser) {
+            return redirect()->route('login');
+        }
+
+        $validated = $this->validateByRole($authUser, $request);
+
+        $userUpdate = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ];
+        if (isset($validated['password'])) {
+            $userUpdate['password'] = $validated['password'];
+        }
         
-        return redirect()->back();
+        \Illuminate\Support\Facades\DB::table('users')
+            ->where('id', $authUser->id)
+            ->update($userUpdate);
+
+        if ($authUser->role === 'patient') {
+            $parts = explode(' ', $validated['name']);
+            $lastName = array_pop($parts);
+            $firstName = implode(' ', $parts) ?: $validated['name'];
+
+            \Illuminate\Support\Facades\DB::table('patients')
+                ->where('email', $authUser->email)
+                ->update([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone_no' => $validated['phone'] ?? null,
+                    'gender' => $validated['sex'] ?? null,
+                    'dob' => $validated['birthday'] ?? null,
+                    'blood_type' => $validated['blood_type'] ?? null,
+                    'allergies' => $validated['allergies'] ?? null,
+                    'medical_conditions' => $validated['medical_conditions'] ?? null,
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'date_of_birth' => $validated['birthday'] ?? null,
+                    'sex' => $validated['sex'] ?? null,
+                    'phone_number' => $validated['phone'] ?? null,
+                    'age' => $validated['age'] ?? null,
+                ]);
+        } elseif ($authUser->role === 'doctor') {
+            \Illuminate\Support\Facades\DB::table('doctors')
+                ->where('email', $authUser->email)
+                ->update([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'] ?? null,
+                    'specialization' => $validated['specialization'] ?? null,
+                    'license_number' => $validated['license_number'] ?? null,
+                    'availability' => $validated['availability'] ?? null,
+                ]);
+        }
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
     

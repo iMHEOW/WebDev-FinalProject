@@ -63,6 +63,23 @@ class DatabaseSeeder extends Seeder
                 if ($tableName === 'patients') {
                     $patientPassword = $data['password'];
                     unset($data['password']);
+
+                    $parts = explode(' ', $data['name']);
+                    $lastName = array_pop($parts);
+                    $firstName = implode(' ', $parts);
+                    $data['first_name'] = $firstName ?: $data['name'];
+                    $data['last_name'] = $lastName;
+                    
+                    $data['sex'] = $data['gender'] ?? null;
+                    $data['phone_number'] = $data['phone_no'] ?? null;
+                    if (isset($data['dob']) && !empty($data['dob'])) {
+                        $data['date_of_birth'] = $data['dob'];
+                        try {
+                            $data['age'] = \Carbon\Carbon::parse($data['dob'])->age;
+                        } catch (\Exception $e) {
+                            $data['age'] = null;
+                        }
+                    }
                 }
             }
 

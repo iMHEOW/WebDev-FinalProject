@@ -19,7 +19,7 @@ class DoctorController extends Controller
         ]);
     }
 
-    public function patient()
+    public function patients()
     {
         return view('doctor.patients');
     }
@@ -53,6 +53,21 @@ class DoctorController extends Controller
             'prescription'      => 'nullable|string',
         ]);
 
+        $validated['name'] = $validated['first_name'] . ' ' . $validated['last_name'];
+        $validated['gender'] = $validated['sex'];
+        $validated['dob'] = $validated['date_of_birth'];
+        $validated['phone_no'] = $validated['phone_number'];
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt('password123'),
+            'role' => 'patient',
+            'email_verified_at' => now(),
+        ]);
+
+        $validated['patient_id'] = $user->id;
+
         Patient::create($validated); 
 
         return redirect('/doctor/directory')->with('success', 'New patient record successfully created!');
@@ -63,10 +78,20 @@ class DoctorController extends Controller
         $patient = Patient::findOrFail($id);
         
         $appointments = DB::select("
-            SELECT * FROM appointment 
+            SELECT 
+                appointment_id,
+                patient_id,
+                doctor_id,
+                visit_type,
+                symptoms,
+                addnotes,
+                status,
+                DATE(schedule) as appointment_date,
+                DATE_FORMAT(schedule, '%H:%i') as appointment_time
+            FROM appointments 
             WHERE patient_id = ? 
-            ORDER BY appointment_date ASC, appointment_time ASC
-        ", [$patient->id]);
+            ORDER BY schedule ASC
+        ", [$patient->patient_id]);
 
         return view('doctor.patients', compact('patient', 'appointments'));
     }
