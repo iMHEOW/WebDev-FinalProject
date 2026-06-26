@@ -139,10 +139,10 @@
                                         <tbody class="text-dark fw-medium" style="font-size: 14px;">
                                             @foreach($medrecord as $row)
                                             <tr class="border-bottom">
-                                                <td class="text-nowrap">{{ $row->Date }}</td>
-                                                <td class="text-nowrap">{{ $row->Type }}</td>
-                                                <td class="text-nowrap">{{ $row->Doctor }}</td>
-                                                <td>{{ $row->Summary }}</td> 
+                                                <td class="text-nowrap">{{ $row->date }}</td>
+                                                <td class="text-nowrap">{{ $row->type }}</td>
+                                                <td class="text-nowrap">{{ $row->doctor }}</td>
+                                                <td>{{ $row->summary }}</td> 
                                             </tr>
                                             @endforeach
                                         </tbody>
