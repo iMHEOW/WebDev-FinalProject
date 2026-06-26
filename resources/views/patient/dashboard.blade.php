@@ -118,7 +118,7 @@
                                                 <td>{{ $row->doctor }}</td>
                                                 <td>{{ $row->department }}</td>
                                                 <td>
-                                                    <span class="{{ $row->Status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
+                                                    <span class="{{ $row->status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
                                                         {{ $row->status }}
                                                     </span>
                                                 </td>
