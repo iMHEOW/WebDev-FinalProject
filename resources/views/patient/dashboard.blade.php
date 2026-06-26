@@ -114,12 +114,12 @@
                                             <tr class="border-bottom text-center">
                                                 <td>{{ $row->date }}</td>
                                                 <td>{{ $row->time }}</td>
-                                                <td>{{ $row->Modality }}</td>
-                                                <td>{{ $row->Doctor }}</td>
-                                                <td>{{ $row->Department }}</td>
+                                                <td>{{ $row->modality }}</td>
+                                                <td>{{ $row->doctor }}</td>
+                                                <td>{{ $row->department }}</td>
                                                 <td>
                                                     <span class="{{ $row->Status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
-                                                        {{ $row->Status }}
+                                                        {{ $row->status }}
                                                     </span>
                                                 </td>
                                                 <td>
@@ -164,8 +164,8 @@
                                             <tr class="border-bottom text-center">
                                                 <td>{{ $row->date }}</td>
                                                 <td>{{ $row->time }}</td>
-                                                <td>{{ $row->Doctor }}</td>
-                                                <td>{{ $row->Department }}</td>
+                                                <td>{{ $row->doctor }}</td>
+                                                <td>{{ $row->department }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
