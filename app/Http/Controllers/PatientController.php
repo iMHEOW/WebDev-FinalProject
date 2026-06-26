@@ -17,13 +17,13 @@ class PatientController extends Controller
 
         $dboardUp = DB::table('appointments')
             ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.doctor_id')
-            ->select('appointments.appointment_id as ID',
-                     DB::raw('DATE(appointments.schedule) as Date'),
-                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as Time"),
-                     'appointments.visit_type as Modality',
-                     'doctors.name as Doctor',
-                     'doctors.department as Department',
-                     'appointments.status as Status')
+            ->select('appointments.appointment_id as id',
+                     DB::raw('DATE(appointments.schedule) as date'),
+                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as time"),
+                     'appointments.visit_type as modality',
+                     'doctors.name as doctor',
+                     'doctors.department as department',
+                     'appointments.status as status')
             ->where('appointments.patient_id', $patient_id)
             ->where('appointments.status', '!=', 'Cancelled')
             ->where('appointments.schedule', '>=', now())
@@ -32,10 +32,10 @@ class PatientController extends Controller
 
         $dboardPast = DB::table('appointments')
             ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.doctor_id')
-            ->select(DB::raw('DATE(appointments.schedule) as Date'),
-                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as Time"),
-                     'doctors.name as Doctor',
-                     'doctors.department as Department')
+            ->select(DB::raw('DATE(appointments.schedule) as date'),
+                     DB::raw("TO_CHAR(appointments.schedule::timestamp, 'HH24:MI') as time"),
+                     'doctors.name as doctor',
+                     'doctors.department as department')
             ->where('appointments.status', '!=', 'Cancelled')
             ->where('appointments.patient_id', $patient_id)
             ->whereBetween('appointments.schedule', [now()->subMonth(), now()])
@@ -161,7 +161,7 @@ class PatientController extends Controller
         $medrecord = DB::table('med_records')
             ->leftJoin('patients', 'med_records.patient_id', '=', 'patients.patient_id')
             ->leftJoin('doctors', 'med_records.doctor_id', '=', 'doctors.doctor_id')
-            ->select('med_records.date as Date', 'med_records.type as Type', 'doctors.name as Doctor', 'med_records.summary as Summary')
+            ->select('med_records.date as date', 'med_records.type as type', 'doctors.name as doctor', 'med_records.summary as summary')
             ->where('med_records.patient_id', $patient_id)
             ->orderBy('med_records.date', 'desc')
             ->get();
@@ -176,13 +176,14 @@ class PatientController extends Controller
         $medrecord = DB::table('med_records')
             ->leftJoin('patients', 'med_records.patient_id', '=', 'patients.patient_id')
             ->leftJoin('doctors', 'med_records.doctor_id', '=', 'doctors.doctor_id')
-            ->select('med_records.date as Date', 'med_records.type as Type', 'doctors.name as Doctor', 'med_records.summary as Summary')
+            ->select('med_records.date as date', 'med_records.type as type', 'doctors.name as doctor', 'med_records.summary as summary')
             ->where('med_records.patient_id', $patient_id)
             ->where(function ($query) use ($request) {
-                $query->where('med_records.date', 'like', "%{$request->param}%")
-                      ->orWhere('med_records.type', 'like', "%{$request->param}%")
-                      ->orWhere('doctors.name', 'like', "%{$request->param}%")
-                      ->orWhere('med_records.summary', 'like', "%{$request->param}%");
+                $param = "%{request->param}%";
+                $query->whereRaw('med_records.date::text ILIKE ?', [$param])
+                      ->orWhere('med_records.type', 'ILIKE', $param)
+                      ->orWhere('doctors.name', 'ILIKE', $param)
+                      ->orWhere('med_records.summary', 'ILIKE', $param);
             })
             ->get();
             
@@ -200,14 +201,14 @@ class PatientController extends Controller
             ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.patient_id')
             ->where('prescriptions.patient_id', $patient_id)
             ->where('prescriptions.refills_left', '!=', '0')
-            ->select('prescription_id as ID', 'medication as Medication', 'dosage as Dosage', 'quantity as Qty', 'instruction as Instruction', 'refills_left as Refills_Left')
+            ->select('prescription_id as id', 'medication as medication', 'dosage as dosage', 'quantity as qty', 'instruction as instruction', 'refills_left as refills_Left')
             ->get();
 
         $pastPresc = DB::table('prescriptions')
             ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.patient_id')
             ->where('prescriptions.patient_id', $patient_id)
             ->where('prescriptions.refills_left', '=', '0')
-            ->select('medication as Medication', 'dosage as Dosage', 'quantity as Qty', 'start_date as Start_Date', 'end_date as End_Date')
+            ->select('medication as medication', 'dosage as dosage', 'quantity as qty', 'start_date as start_Date', 'end_date as end_Date')
             ->get();
 
         return view('patient.prescriptions', compact('patientName', 'activeP', 'pastP', 'activePresc', 'pastPresc', 'patient_id'));
