@@ -156,11 +156,11 @@
                                             <tbody class="text-dark fw-medium" style="font-size: 15px;">
                                                 @foreach($activePresc as $row)
                                                 <tr class="border-bottom text-center">
-                                                    <td class="text-nowrap">{{ $row->Medication }}</td>
-                                                    <td class="text-nowrap">{{ $row->Dosage }}</td>
-                                                    <td class="text-nowrap">{{ $row->Qty }}</td>
-                                                    <td class="text-start">{{ $row->Instruction }}</td>
-                                                    <td class="text-nowrap">{{ $row->{'Refills_Left'} }}</td>
+                                                    <td class="text-nowrap">{{ $row->medication }}</td>
+                                                    <td class="text-nowrap">{{ $row->dosage }}</td>
+                                                    <td class="text-nowrap">{{ $row->qty }}</td>
+                                                    <td class="text-start">{{ $row->instruction }}</td>
+                                                    <td class="text-nowrap">{{ $row->{'refills_left'} }}</td>
                                                     <td>
                                                         <form action="{{ route('patient.requestRefill', ['patient' => $patient_id]) }}" method="POST">
                                                             @csrf
@@ -204,11 +204,11 @@
                                             <tbody class="text-dark fw-medium" style="font-size: 15px;">
                                                 @foreach($pastPresc as $row)
                                                 <tr class="border-bottom text-center">
-                                                    <td class="text-nowrap">{{ $row->Medication }}</td>
-                                                    <td class="text-nowrap">{{ $row->Dosage }}</td>
-                                                    <td class="text-nowrap">{{ $row->Qty }}</td>
-                                                    <td class="text-nowrap">{{ $row->{'Start_Date'} }}</td>
-                                                    <td class="text-nowrap">{{ $row->{'End_Date'} }}</td>
+                                                    <td class="text-nowrap">{{ $row->medication }}</td>
+                                                    <td class="text-nowrap">{{ $row->dosage }}</td>
+                                                    <td class="text-nowrap">{{ $row->qty }}</td>
+                                                    <td class="text-nowrap">{{ $row->{'start_date'} }}</td>
+                                                    <td class="text-nowrap">{{ $row->{'end_date'} }}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
