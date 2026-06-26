@@ -88,8 +88,8 @@
                                     <td>
                                         <form action="{{ route('patient.requestRefill', ['patient' => $patient_id]) }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="prescription_id" value="{{ $row->ID }}">
-                                            <input type="hidden" name="medication" value="{{ $row->Medication }}">
+                                            <input type="hidden" name="prescription_id" value="{{ $row->id }}">
+                                            <input type="hidden" name="medication" value="{{ $row->medication }}">
                                             
                                             <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 12px;">
                                                 Ask for Refill
