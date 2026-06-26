@@ -126,7 +126,7 @@
                                                     @if($row->Status !== 'Cancelled')
                                                         <form action="{{ route('patient.cancelAppointment', ['patient' => $patient_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
                                                             @csrf
-                                                            <input type="hidden" name="appointment_id" value="{{ $row->ID }}">
+                                                            <input type="hidden" name="appointment_id" value="{{ $row->id }}">
                                                             <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold" style="font-size: 13px;">
                                                                 Cancel
                                                             </button>
