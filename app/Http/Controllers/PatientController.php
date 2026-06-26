@@ -201,14 +201,14 @@ class PatientController extends Controller
             ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.patient_id')
             ->where('prescriptions.patient_id', $patient_id)
             ->where('prescriptions.refills_left', '!=', '0')
-            ->select('prescription_id as id', 'medication as medication', 'dosage as dosage', 'quantity as qty', 'instruction as instruction', 'refills_left as refills_Left')
+            ->select('prescription_id as id', 'medication as medication', 'dosage as dosage', 'quantity as qty', 'instruction as instruction', 'refills_left as refills_left')
             ->get();
 
         $pastPresc = DB::table('prescriptions')
             ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.patient_id')
             ->where('prescriptions.patient_id', $patient_id)
             ->where('prescriptions.refills_left', '=', '0')
-            ->select('medication as medication', 'dosage as dosage', 'quantity as qty', 'start_date as start_Date', 'end_date as end_Date')
+            ->select('medication as medication', 'dosage as dosage', 'quantity as qty', 'start_date as start_date', 'end_date as end_date')
             ->get();
 
         return view('patient.prescriptions', compact('patientName', 'activeP', 'pastP', 'activePresc', 'pastPresc', 'patient_id'));
