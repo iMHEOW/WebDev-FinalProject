@@ -123,7 +123,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    @if($row->Status !== 'Cancelled')
+                                                    @if($row->status !== 'Cancelled')
                                                         <form action="{{ route('patient.cancelAppointment', ['patient' => $patient_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
                                                             @csrf
                                                             <input type="hidden" name="appointment_id" value="{{ $row->id }}">
