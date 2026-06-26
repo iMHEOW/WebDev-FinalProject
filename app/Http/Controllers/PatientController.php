@@ -189,7 +189,7 @@ class PatientController extends Controller
             ->where('med_records.patient_id', $patient_id)
             ->where(function ($query) use ($request) {
                 $param = '%' . $request->param . '%';
-                $query->whereRaw($query->whereRaw(
+                $query->whereRaw(
                     '(med_records.date::text ILIKE ? OR med_records.type::text ILIKE ? OR doctors.name::text ILIKE ? OR med_records.summary::text ILIKE ?)', 
                     [$param, $param, $param, $param]
                 );
