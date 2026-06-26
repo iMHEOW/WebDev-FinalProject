@@ -173,6 +173,15 @@ class PatientController extends Controller
     {
         $patientName = DB::table('patients')->where('patient_id', $patient_id)->value('name');
 
+        $monthRecord = DB::table('med_records')
+            ->where('patient_id', $patient_id)
+            ->whereBetween('date', [now()->startOfMonth(), now()])
+            ->count();
+
+        $totalRecord = DB::table('med_records')
+            ->where('patient_id', $patient_id)
+            ->count('record_id');
+        
         $medrecord = DB::table('med_records')
             ->leftJoin('patients', 'med_records.patient_id', '=', 'patients.patient_id')
             ->leftJoin('doctors', 'med_records.doctor_id', '=', 'doctors.doctor_id')
@@ -181,13 +190,14 @@ class PatientController extends Controller
             ->where(function ($query) use ($request) {
                 $param = "%{request->param}%";
                 $query->whereRaw('med_records.date::text ILIKE ?', [$param])
-                      ->orWhere('med_records.type', 'ILIKE', $param)
-                      ->orWhere('doctors.name', 'ILIKE', $param)
-                      ->orWhere('med_records.summary', 'ILIKE', $param);
+                      ->orWhere('med_records.type::text ILIKE ?', [$param])
+                      ->orWhere('doctors.name::text ILIKE ?', [$param])
+                      ->orWhere('med_records.summary::text ILIKE', [$param]);
             })
+            ->orderBy('med_records.date','desc')
             ->get();
             
-        return view('patient.records', compact('patientName', 'medrecord', 'patient_id'));
+        return view('patient.records', compact('patientName', 'monthRecord', 'totalRecord', 'medrecord', 'patient_id'));
     }
 
     public function prescriptions($patient_id)
@@ -221,9 +231,16 @@ class PatientController extends Controller
 
         $doctorName = DB::table('prescriptions')
             ->where('prescriptions.prescription_id', $prescriptionId)
+            ->where('prescriptions.patient_id', $patient_id)
             ->join('doctors', 'prescriptions.doctor_id', '=', 'doctors.doctor_id')
             ->value('doctors.name');
 
+        if (!$doctorName) {
+            return redirect()->back()->withErrors([
+                'error' => 'Invalid prescription request.'
+            ]);
+        }
+        
         DB::table('refill_requests')->insert([
             'request_date' => now(),
             'prescription_id' => $prescriptionId,
