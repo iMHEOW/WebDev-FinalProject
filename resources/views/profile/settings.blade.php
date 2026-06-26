@@ -175,10 +175,25 @@
                     <h5 class="fw-bold text-dark mb-3">Security Settings</h5>
                     
                     <div class="row g-3">
+
                         <div class="col-12 col-md-6">
                             <label for="password" class="form-label fw-semibold text-dark">New Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Enter new password">
+
+                            <div class="position-relative">
+                                <input
+                                    type="password"
+                                    class="form-control pe-5 @error('password') is-invalid @enderror"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter new password">
+
+                                <span class="toggle-password" onclick="togglePassword('password')">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+
                             <small class="text-muted">Leave blank to keep current</small>
+
                             @error('password')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -186,12 +201,23 @@
 
                         <div class="col-12 col-md-6">
                             <label for="password_confirmation" class="form-label fw-semibold text-dark">Confirm Password</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm new password">
-                        </div>
-                    </div>
-                </div>
 
-                
+                            <div class="position-relative">
+                                <input
+                                    type="password"
+                                    class="form-control pe-5"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    placeholder="Confirm new password">
+
+                                <span class="toggle-password" onclick="togglePassword('password_confirmation')">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
                 <div class="d-flex gap-2 justify-content-end">
                     <a href="javascript:window.history.back()" class="btn btn-outline-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Save Changes</button>

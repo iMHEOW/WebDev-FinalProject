@@ -139,6 +139,24 @@
         </div>
     </div>
 
+    <script>
+    function togglePassword(fieldId) {
+        const input = document.getElementById(fieldId);
+
+        if (!input) return;
+
+        const icon = event.currentTarget.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("bi-eye", "bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("bi-eye-slash", "bi-eye");
+        }
+    }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
@@ -240,5 +258,17 @@
     
     tbody tr.border-bottom {
         border-color: #f8fafc !important;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 16px;
+        user-select: none;
+        color: currentColor;
+        opacity: 0.4;
     }
 </style>
