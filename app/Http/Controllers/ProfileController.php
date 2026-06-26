@@ -45,7 +45,7 @@ class ProfileController extends Controller
                 $user->sex        = $patient->gender ?? '';
                 $user->birthday   = $patient->dob ?? '';
                 $user->address    = $patient->address ?? '';
-                $patient_id       = $patient->id;
+                $patient_id       = $patient->patient_id;
                 if ($patient->dob) {
                     try {
                         $user->age = \Carbon\Carbon::parse($patient->dob)->age;

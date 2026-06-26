@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,15 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'patient',
+        ]);
+
+        // Create the patient record
+        Patient::create([
+            'first_name' => $validated['first_name'],
+            'last_name'  => $validated['last_name'],
+            'email'      => $validated['email'],
+            'name'       => $validated['first_name'] . ' ' . $validated['last_name'],
+            'patient_id' => $user->id,
         ]);
 
         $user->sendEmailVerificationNotification();
