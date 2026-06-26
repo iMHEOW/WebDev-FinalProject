@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         DB::table('med_records')->truncate();
         DB::table('prescriptions')->truncate();
         DB::table('rooms')->truncate();
+        DB::table('feedbacks')->truncate();
 
         Schema::enableForeignKeyConstraints();
 
@@ -33,6 +34,8 @@ class DatabaseSeeder extends Seeder
         $this->importCsv('med_record.csv', 'med_records');
         $this->importCsv('prescriptions.csv', 'prescriptions');
         $this->importCsv('room.csv', 'rooms');
+
+        $this->importCsv('feedback.csv', 'feedbacks');
     }
 
     private function importCsv(string $filename, string $tableName): void

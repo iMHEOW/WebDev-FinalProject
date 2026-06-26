@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="col-md-6 col-lg-3 ms-auto">
-            <select class="form-select bg-light border-0 py-2" style="font-size: 0.85rem; border-radius: 10px; color: #64748b;">
+            <select id="sortVisit" class="form-select bg-light border-0 py-2" style="font-size: 0.85rem; border-radius: 10px; color: #64748b;">
                 <option value="">Sort by Last Visit</option>
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -107,7 +107,7 @@
                         $age = $dob->age;
                         $formattedDob = $dob->format('M j, Y');
                     @endphp
-                    <tr class="border-bottom patient-row" style="border-color: #f8fafc !important;">
+                    <tr class="border-bottom patient-row" data-last-visit="{{ $patient->last_visit ?? '' }}" style="border-color: #f8fafc !important;">
                         <td class="py-3">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-sm {{ $patient->gender === 'Female' ? 'bg-female' : 'bg-male' }}" 
@@ -116,7 +116,12 @@
                                 </div>
                                 <div>
                                     <h6 class="fw-bold mb-0 text-dark patient-name" style="font-size: 0.9rem;">{{ $patient->name }}</h6>
-                                    <span class="text-secondary" style="font-size: 0.75rem;">ID: #{{ $patient->patient_id }}</span>
+                                    <span class="text-secondary d-block" style="font-size: 0.75rem;">ID: #{{ $patient->patient_id }}</span>
+                                    @if($patient->last_visit)
+                                        <span class="text-muted d-block" style="font-size: 0.72rem; margin-top: 1px;">Last Visit: {{ \Carbon\Carbon::parse($patient->last_visit)->format('M j, Y') }}</span>
+                                    @else
+                                        <span class="text-muted d-block" style="font-size: 0.72rem; margin-top: 1px;">Last Visit: Never</span>
+                                    @endif
                                 </div>
                             </div>
                         </td>
@@ -157,10 +162,15 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('patientSearch');
-    const rows = document.querySelectorAll('.patient-row');
+    const sortSelect = document.getElementById('sortVisit');
+    const tbody = document.querySelector('tbody');
+    const originalRows = Array.from(tbody.querySelectorAll('.patient-row'));
 
-    searchInput.addEventListener('input', function() {
+    function filterAndSort() {
         const query = searchInput.value.toLowerCase().trim();
+        const sortValue = sortSelect.value;
+
+        let rows = [...originalRows];
 
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
@@ -170,7 +180,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = 'none';
             }
         });
-    });
+
+        if (sortValue === 'newest') {
+            rows.sort((a, b) => {
+                const dateA = a.getAttribute('data-last-visit');
+                const dateB = b.getAttribute('data-last-visit');
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                return new Date(dateB) - new Date(dateA);
+            });
+        } else if (sortValue === 'oldest') {
+            rows.sort((a, b) => {
+                const dateA = a.getAttribute('data-last-visit');
+                const dateB = b.getAttribute('data-last-visit');
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                return new Date(dateA) - new Date(dateB);
+            });
+        }
+
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    searchInput.addEventListener('input', filterAndSort);
+    sortSelect.addEventListener('change', filterAndSort);
 });
 </script>
 

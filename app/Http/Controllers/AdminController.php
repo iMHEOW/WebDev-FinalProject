@@ -142,6 +142,7 @@ class AdminController extends Controller
             ->select(
                 'p.*',
                 'd.name as doctor_name',
+                'a.schedule as last_visit',
                 DB::raw('(SELECT COUNT(*) FROM med_records WHERE patient_id = p.patient_id) as records_count')
             )
             ->get();
@@ -215,91 +216,15 @@ class AdminController extends Controller
         return view('admin.appointments', compact('upcomingAppointments', 'pastAppointments'));
     }
 
-    public function tickets()
+
+    public function feedbacks()
     {
-        $conflicts = DB::table('appointments as a')
-            ->join('doctors as d', 'a.doctor_id', '=', 'd.doctor_id')
-            ->select('a.doctor_id', 'a.schedule', 'd.name as doctor_name', 'd.department')
-            ->where('a.status', 'Pending')
-            ->groupBy('a.doctor_id', 'a.schedule', 'd.name', 'd.department')
-            ->havingRaw('COUNT(a.appointment_id) > 1')
+        $feedbacks = DB::table('feedbacks as f')
+            ->leftJoin('patients as p', 'f.patient_id', '=', 'p.patient_id')
+            ->select('f.*', 'p.name as patient_name')
+            ->orderBy('f.created_at', 'desc')
             ->get();
-
-        $ticketReports = [];
-        $ticketNum = 101;
-        foreach ($conflicts as $conflict) {
-            $bookings = DB::table('appointments as a')
-                ->join('patients as p', 'a.patient_id', '=', 'p.patient_id')
-                ->select('a.appointment_id', 'p.name as patient_name', 'a.visit_type', 'a.schedule')
-                ->where('a.doctor_id', $conflict->doctor_id)
-                ->where('a.schedule', $conflict->schedule)
-                ->where('a.status', 'Pending')
-                ->get();
-
-            $ticketReports[] = [
-                'ticket_id'   => 'TC-' . $ticketNum++,
-                'doctor_id'   => $conflict->doctor_id,
-                'doctor_name' => $conflict->doctor_name,
-                'department'  => $conflict->department,
-                'schedule'    => $conflict->schedule,
-                'bookings'    => $bookings
-            ];
-        }
-
-        $allDoctors = DB::table('doctors')->select('doctor_id', 'name', 'department')->orderBy('name')->get();
-
-        return view('admin.tickets', compact('ticketReports', 'allDoctors'));
-    }
-
-    public function rescheduleAppointments(Request $request)
-    {
-        $validated = $request->validate([
-            'appt_ids'    => 'required|array',
-            'dates'       => 'required|array',
-            'times'       => 'required|array',
-            'visit_types' => 'required|array',
-        ]);
-
-        $apptIds  = $validated['appt_ids'];
-        $dates    = $validated['dates'];
-        $times    = $validated['times'];
-        $vtypes   = $validated['visit_types'];
-
-        foreach ($apptIds as $i => $apptId) {
-            $date = $dates[$i] ?? null;
-            $time = $times[$i] ?? null;
-            if ($date && $time) {
-                DB::table('appointments')->where('appointment_id', $apptId)->update([
-                    'schedule'   => $date . ' ' . $time . ':00',
-                    'visit_type' => $vtypes[$i] ?? 1,
-                    'updated_at' => now(),
-                ]);
-            }
-        }
-
-        return redirect()->route('admin.tickets')->with('success', 'Appointments rescheduled successfully!');
-    }
-
-    public function reassignAppointments(Request $request)
-    {
-        $validated = $request->validate([
-            'appt_ids'   => 'required|array',
-            'doctor_ids' => 'required|array',
-        ]);
-
-        $apptIds   = $validated['appt_ids'];
-        $doctorIds = $validated['doctor_ids'];
-
-        foreach ($apptIds as $i => $apptId) {
-            $newDoctor = $doctorIds[$i] ?? null;
-            if ($newDoctor) {
-                DB::table('appointments')->where('appointment_id', $apptId)->update([
-                    'doctor_id'  => $newDoctor,
-                    'updated_at' => now(),
-                ]);
-            }
-        }
-
-        return redirect()->route('admin.tickets')->with('success', 'Appointments reassigned successfully!');
+        
+        return view('admin.feedbacks', compact('feedbacks'));
     }
 }

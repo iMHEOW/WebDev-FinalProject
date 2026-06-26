@@ -55,9 +55,7 @@ Route::prefix('admin')
 
         Route::get('/appointments', [AdminController::class, 'appointments'])->name('admin.appointments');
 
-        Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
-        Route::post('/tickets/reschedule', [AdminController::class, 'rescheduleAppointments'])->name('admin.ticket.reschedule');
-        Route::post('/tickets/reassign', [AdminController::class, 'reassignAppointments'])->name('admin.ticket.reassign');
+        Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
     });
 
 Route::prefix('patient/{patient}')
@@ -76,6 +74,8 @@ Route::prefix('patient/{patient}')
 
         Route::get('/prescriptions', [PatientController::class, 'prescriptions'])->name('patient.prescriptions');
         Route::post('/request-refill', [PatientController::class, 'requestRefill'])->name('patient.requestRefill');
+        Route::get('/give-review', [PatientController::class, 'review'])->name('patient.review');
+        Route::post('/give-review', [PatientController::class, 'storeReview'])->name('patient.storeReview');
     });
 
 Route::prefix('profile')

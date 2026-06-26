@@ -1,242 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUP Care - Patient Dashboard</title>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
-<body class="antialiased">
+@extends('patient.patientLayout')
 
-    <div class="d-flex vh-100 overflow-hidden">
-        
-        <aside class="bg-white border-end p-4 d-flex flex-column justify-content-between h-100 flex-shrink-0" style="width: 256px;">
-            <div>
-                <div class="d-flex align-items-center gap-2 mb-4 px-2">
-                    <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center me-2 shadow-sm" style="width: 40px; height: 40px;">
-                        <i class="bi bi-heart-pulse-fill fs-5"></i>
+@section('title', 'Patient Dashboard')
+
+@section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <h2><b>Welcome back</b>, {{ $patientName }}!</h2>
+
+    <div class="row mt-3 g-4">
+        <div class="col-12 col-lg-9">
+            <div class="hospital-card d-flex flex-column">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-dark mb-0 fs-5" style="letter-spacing: -0.5px;">
+                            Upcoming Appointments
+                        </h4>
                     </div>
-                    <span class="fs-5 fw-bold text-dark" style="letter-spacing: -0.5px;">PUP Care</span>
+
+                    <div class="table-responsive">
+                        <table class="table table-borderless align-middle mb-5">
+                            <thead>
+                                <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
+                                    <th class="pb-3 fw-semibold text-center">Date</th>
+                                    <th class="pb-3 fw-semibold text-center">Time</th>
+                                    <th class="pb-3 fw-semibold text-center">Modality</th>
+                                    <th class="pb-3 fw-semibold text-center">Doctor</th>
+                                    <th class="pb-3 fw-semibold text-center">Department</th>
+                                    <th class="pb-3 fw-semibold text-center">Status</th>
+                                    <th class="pb-3 fw-semibold text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-dark fw-medium" style="font-size: 14px;">
+                                @foreach($dboardUp as $row)
+                                <tr class="border-bottom text-center">
+                                    <td>{{ $row->date }}</td>
+                                    <td>{{ $row->time }}</td>
+                                    <td>{{ $row->modality }}</td>
+                                    <td>{{ $row->doctor }}</td>
+                                    <td>{{ $row->department }}</td>
+                                    <td>
+                                        <span class="{{ $row->status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
+                                            {{ $row->status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if($row->status !== 'Cancelled')
+                                            <form action="{{ route('patient.cancelAppointment', ['patient' => $patient_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
+                                                @csrf
+                                                <input type="hidden" name="appointment_id" value="{{ $row->id }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold" style="font-size: 13px;">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-muted small">Cancelled</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <nav class="d-flex flex-column gap-1">
-                    <a href="/patient/{{ $patient_id }}/dashboard" class="d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded text-primary bg-primary bg-opacity-10 fw-semibold transition-all">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
-                        <span class="small">Home</span>
-                    </a>
-                    <a href="/patient/{{ $patient_id }}/set-appointment" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 12 4 V 20 M 4 12 H 20"></path></svg>
-                        <span class="small">Set Appointment</span>
-                    </a>
-                    <a href="/patient/{{ $patient_id }}/records" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        <span class="small">My Medical Records</span>
-                    </a>
-                    <a href="/patient/{{ $patient_id }}/prescriptions" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        <span class="small">My Prescriptions</span>
-                    </a>
-                    <a href="{{ route('profile.settings') }}" class="nav-link-custom d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded fw-medium transition-all">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <span class="small">Profile Settings</span>
-                    </a>
-                </nav>
+                <div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold text-dark mb-0 fs-5" style="letter-spacing: -0.5px;">
+                            Past Appointments (last 30 days)
+                        </h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-borderless align-middle mb-0">
+                            <thead>
+                                <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
+                                    <th class="pb-3 fw-semibold text-center">Date</th>
+                                    <th class="pb-3 fw-semibold text-center">Time</th>
+                                    <th class="pb-3 fw-semibold text-center">Doctor</th>
+                                    <th class="pb-3 fw-semibold text-center">Department</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-dark fw-medium" style="font-size: 14px;">
+                                @foreach($dboardPast as $row)
+                                <tr class="border-bottom text-center">
+                                    <td>{{ $row->date }}</td>
+                                    <td>{{ $row->time }}</td>
+                                    <td>{{ $row->doctor }}</td>
+                                    <td>{{ $row->department }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+            <div class="hospital-card text-center mb-4">
+                <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Upcoming Appointments</h6>
+                <h1 class="display-4 fw-bold text-primary mb-0">
+                    {{ $upcomingApp ?? 0 }}
+                </h1>
             </div>
 
-            <div>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="nav-link text-danger border-0 bg-transparent">
-                        <i class="bi bi-box-arrow-right me-2"></i> Log out
-                    </button>
-                </form>
+            <div class="hospital-card text-center mb-4">
+            <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Active Prescriptions</h6>
+                <h1 class="display-4 fw-bold text-success mb-0">
+                    {{ $activePre ?? 0 }}
+                </h1>
             </div>
-        </aside>
 
-        <div class="flex-grow-1 d-flex flex-column h-100 overflow-hidden">
-            
-            <header class="bg-white border-bottom d-flex align-items-center justify-content-between px-4 px-md-5 flex-shrink-0" style="height: 80px;">
-                <div class="position-relative" style="width: 400px;"> </div>
-                <div class="d-flex align-items-center gap-4">
-                    <a href="{{ route('profile.settings') }}" class="text-decoration-none d-flex align-items-center gap-3 border-start ps-4">
-                        @php
-                            $patName = Auth::user() ? Auth::user()->name : ($patientName ?? 'Patient');
-                            $words = explode(' ', $patName);
-                            $initials = '';
-                            foreach ($words as $w) {
-                                $initials .= isset($w[0]) ? strtoupper($w[0]) : '';
-                            }
-                            $initials = substr($initials, 0, 2);
-                        @endphp
-                        <div class="text-end">
-                            <p class="mb-0 small fw-bold text-dark lh-1">{{ $patName }}</p>
-                            <p class="mb-0 text-muted fw-medium" style="font-size: 12px;">Patient</p>
-                        </div>
-                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 40px; height: 40px; font-size: 14px;">
-                            {{ $initials }}
-                        </div>
-                    </a>
-                </div>
-            </header>
-
-
-            <main class="flex-grow-1 overflow-auto p-4 p-md-5">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-                <h2><b>Welcome back</b>, {{ $patientName }}!</h2>
-
-                <div class="row mt-3 g-4">
-                    <div class="col-12 col-lg-9">
-                        <div class="hospital-card d-flex flex-column">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="fw-bold text-dark mb-0 fs-5" style="letter-spacing: -0.5px;">
-                                        Upcoming Appointments
-                                    </h4>
-                                </div>
-
-                                <div class="table-responsive">
-                                    <table class="table table-borderless align-middle mb-5">
-                                        <thead>
-                                            <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
-                                                <th class="pb-3 fw-semibold text-center">Date</th>
-                                                <th class="pb-3 fw-semibold text-center">Time</th>
-                                                <th class="pb-3 fw-semibold text-center">Modality</th>
-                                                <th class="pb-3 fw-semibold text-center">Doctor</th>
-                                                <th class="pb-3 fw-semibold text-center">Department</th>
-                                                <th class="pb-3 fw-semibold text-center">Status</th>
-                                                <th class="pb-3 fw-semibold text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-dark fw-medium" style="font-size: 14px;">
-                                            @foreach($dboardUp as $row)
-                                            <tr class="border-bottom text-center">
-                                                <td>{{ $row->date }}</td>
-                                                <td>{{ $row->time }}</td>
-                                                <td>{{ $row->modality }}</td>
-                                                <td>{{ $row->doctor }}</td>
-                                                <td>{{ $row->department }}</td>
-                                                <td>
-                                                    <span class="{{ $row->status == 'Cancelled' ? 'text-danger fw-bold' : '' }}">
-                                                        {{ $row->status }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    @if($row->status !== 'Cancelled')
-                                                        <form action="{{ route('patient.cancelAppointment', ['patient' => $patient_id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment? This action cannot be undone.');">
-                                                            @csrf
-                                                            <input type="hidden" name="appointment_id" value="{{ $row->id }}">
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger fw-semibold" style="font-size: 13px;">
-                                                                Cancel
-                                                            </button>
-                                                        </form>
-                                                    @else
-                                                        <span class="text-muted small">Cancelled</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="fw-bold text-dark mb-0 fs-5" style="letter-spacing: -0.5px;">
-                                        Past Appointments (last 30 days)
-                                    </h4>
-                                </div>
-
-                                <div class="table-responsive">
-                                    <table class="table table-borderless align-middle mb-0">
-                                        <thead>
-                                            <tr class="border-bottom text-uppercase text-muted" style="font-size: 12px;">
-                                                <th class="pb-3 fw-semibold text-center">Date</th>
-                                                <th class="pb-3 fw-semibold text-center">Time</th>
-                                                <th class="pb-3 fw-semibold text-center">Doctor</th>
-                                                <th class="pb-3 fw-semibold text-center">Department</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-dark fw-medium" style="font-size: 14px;">
-                                            @foreach($dboardPast as $row)
-                                            <tr class="border-bottom text-center">
-                                                <td>{{ $row->date }}</td>
-                                                <td>{{ $row->time }}</td>
-                                                <td>{{ $row->doctor }}</td>
-                                                <td>{{ $row->department }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-lg-3">
-                        <div class="hospital-card text-center mb-4">
-                            <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Upcoming Appointments</h6>
-                            <h1 class="display-4 fw-bold text-primary mb-0">
-                                {{ $upcomingApp ?? 0 }}
-                            </h1>
-                        </div>
-
-                        <div class="hospital-card text-center mb-4">
-                        <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Active Prescriptions</h6>
-                            <h1 class="display-4 fw-bold text-success mb-0">
-                                {{ $activePre ?? 0 }}
-                            </h1>
-                        </div>
-
-                        <div class="hospital-card text-center">
-                            <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">New Medical Records This Month</h6>
-                            <h1 class="display-4 fw-bold text-success mb-0">
-                                {{ $monthRecord ?? 0 }}
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </main>
+            <div class="hospital-card text-center">
+                <h6 class="text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">New Medical Records This Month</h6>
+                <h1 class="display-4 fw-bold text-success mb-0">
+                    {{ $monthRecord ?? 0 }}
+                </h1>
+            </div>
         </div>
     </div>
+@endsection
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
+@section('styles')
 <style>
-    body {
-        background-color: #f0f4fa;
-        color: #475569;
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
-    }
-
-    .transition-all {
-        transition: all 0.2s ease-in-out;
-    }
-
-    .nav-link-custom {
-        color: #94a3b8; 
-    }
-    .nav-link-custom:hover {
-        background-color: #f8fafc; 
-        color: #334155; 
-    }
-
-    .logout-link {
-        color: #94a3b8; 
-    }
-    .logout-link:hover {
-        background-color: #fff1f2; 
-        color: #e11d48; 
-    }
-
     .search-input:focus {
         background-color: #ffffff !important;
         border-color: #e2e8f0;
@@ -300,12 +191,5 @@
         background-color: #1d4ed8;
         color: #ffffff;
     }
-
-    .text-muted {
-        color: #94a3b8 !important; 
-    }
-    
-    tbody tr.border-bottom {
-        border-color: #f8fafc !important;
-    }
 </style>
+@endsection

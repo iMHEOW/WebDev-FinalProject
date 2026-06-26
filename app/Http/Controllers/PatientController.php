@@ -251,5 +251,32 @@ class PatientController extends Controller
         return redirect()->back()->with('success', "Refill request for {$medicationN} has been sent to Dr. {$doctorName}");
     }
 
+    public function review($patient_id)
+    {
+        $patientName = DB::table('patients')
+            ->where('patient_id', $patient_id)
+            ->value('name');
+
+        return view('patient.review', compact('patient_id', 'patientName'));
+    }
+
+    public function storeReview(Request $request, $patient_id)
+    {
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comments' => 'required|string|max:1000',
+        ]);
+
+        DB::table('feedbacks')->insert([
+            'patient_id' => $patient_id,
+            'rating' => $validated['rating'],
+            'comments' => $validated['comments'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('patient.dashboard', $patient_id)->with('success', 'Thank you for your feedback!');
+    }
+
     public function fallbackPage() { return "404 PAGE NOT FOUND"; }
 }
