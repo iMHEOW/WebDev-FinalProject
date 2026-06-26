@@ -86,8 +86,8 @@ class DoctorController extends Controller
                 symptoms,
                 addnotes,
                 status,
-                DATE(schedule) as appointment_date,
-                DATE_FORMAT(schedule, '%H:%i') as appointment_time
+                schedule::date as appointment_date,
+                TO_CHAR(schedule::timestamp, 'HH24:MI') as appointment_time
             FROM appointments 
             WHERE patient_id = ? 
             ORDER BY schedule ASC
