@@ -49,20 +49,29 @@ class DatabaseSeeder extends Seeder
         $csvFile = fopen($csvPath, 'r');
         $headers = fgetcsv($csvFile);
 
+        DB::beginTransaction();
+
         while (($row = fgetcsv($csvFile)) !== false) {
             $data = array_combine($headers, $row);
 
             if ($tableName === 'admins') {
                 if (isset($data['password'])) {
-                    $data['password'] = bcrypt($data['password']);
+                    static $cachedAdminHash = null;
+                    if (!$cachedAdminHash) {
+                        $cachedAdminHash = bcrypt($data['password']);
+                    }
+                    $data['password'] = $cachedAdminHash;
                 }
                 unset($data['role']);
             }
 
             $patientPassword = null;
             if ($tableName === 'doctors' || $tableName === 'patients') {
-                $rawPassword = $data['password'] ?? 'password123';
-                $data['password'] = bcrypt($rawPassword);
+                static $cachedHash = null;
+                if (!$cachedHash) {
+                    $cachedHash = bcrypt('password123');
+                }
+                $data['password'] = $cachedHash;
                 if ($tableName === 'patients') {
                     $patientPassword = $data['password'];
                     unset($data['password']);
@@ -129,6 +138,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        DB::commit();
         fclose($csvFile);
     }
 }

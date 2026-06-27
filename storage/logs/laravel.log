@@ -16659,3 +16659,8 @@ HINT:  No function matches the given name and argument types. You might need to 
 #16 C:/Users/Karizha/Documents/Hospital System/hospital-system/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
 #17 {main}
 "} 
+[2026-06-26 12:13:17] local.ERROR: Call to private method Database\Seeders\DatabaseSeeder::importCsv() from scope SeederWrapper {"exception":"[object] (Error(code: 0): Call to private method Database\\Seeders\\DatabaseSeeder::importCsv() from scope SeederWrapper at C:/Users/Eujen Gonzales/.gemini/antigravity/brain/936a3bc2-9676-486d-913d-8c0fd4d8ce1b/scratch/run_seeder.php:11)
+[stacktrace]
+#0 C:/Users/Eujen Gonzales/.gemini/antigravity/brain/936a3bc2-9676-486d-913d-8c0fd4d8ce1b/scratch/run_seeder.php(28): SeederWrapper->importWithLog('admin.csv', 'admins')
+#1 {main}
+"} 

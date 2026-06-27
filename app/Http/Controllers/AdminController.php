@@ -89,21 +89,31 @@ class AdminController extends Controller
             'specialization' => 'required|string|max:255',
             'department'     => 'required|string|max:255',
             'phone'          => 'required|string|max:20',
-            'email'          => 'required|email|max:255|unique:doctors,email',
+            'email'          => 'required|email|max:255|unique:doctors,email|unique:users,email',
             'password'       => 'required|string|min:6',
             'status'         => 'nullable|string|in:On Duty,On Leave',
         ]);
 
-        $nextId = DB::table('doctors')->max('doctor_id') + 1;
+        $hashedPassword = bcrypt($validated['password']);
+
+        $userId = DB::table('users')->insertGetId([
+            'name'              => $validated['name'],
+            'email'             => $validated['email'],
+            'password'          => $hashedPassword,
+            'role'              => 'doctor', 
+            'email_verified_at' => now(),   
+            'created_at'        => now(),
+            'updated_at'        => now(),
+        ]);
 
         DB::table('doctors')->insert([
-            'doctor_id'      => $nextId,
+            'doctor_id'      => $userId,
             'name'           => $validated['name'],
             'specialization' => $validated['specialization'],
             'department'     => $validated['department'],
             'phone'          => $validated['phone'],
             'email'          => $validated['email'],
-            'password'       => bcrypt($validated['password']),
+            'password'       => $hashedPassword,
             'status'         => $validated['status'] ?? 'On Duty',
             'created_at'     => now(),
             'updated_at'     => now(),

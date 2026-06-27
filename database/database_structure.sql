@@ -240,11 +240,7 @@ INSERT INTO `med_records` (`record_id`, `patient_id`, `doctor_id`, `date`, `type
 (11, 4, 1, '2026-05-28', 'Cardiology Follow-up', 'Monitoring hypertension. Medication effective.'),
 (12, 5, 1, '2026-06-16', 'Routine Checkup', 'Blood pressure stable. Continue current prescription.');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `migrations`
---
 
 DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
@@ -252,10 +248,6 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `migrations`
---
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
@@ -265,11 +257,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '0001_01_01_000002_create_jobs_table', 1),
 (6, '2026_06_20_115024_create_hospital_tables', 2);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `password_reset_tokens`
---
 
 DROP TABLE IF EXISTS `password_reset_tokens`;
 CREATE TABLE `password_reset_tokens` (
@@ -278,11 +265,7 @@ CREATE TABLE `password_reset_tokens` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `patients`
---
 
 DROP TABLE IF EXISTS `patients`;
 CREATE TABLE `patients` (
@@ -295,9 +278,7 @@ CREATE TABLE `patients` (
   `email` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `patients`
---
+
 
 INSERT INTO `patients` (`patient_id`, `name`, `gender`, `dob`, `phone_no`, `address`, `email`) VALUES
 (1, 'Amihan R. Batumbakal', 'Female', '1990-10-02', '09121234567', 'La Union', 'amihan@yahoo.com'),
@@ -311,11 +292,7 @@ INSERT INTO `patients` (`patient_id`, `name`, `gender`, `dob`, `phone_no`, `addr
 (9, 'Robert Roberto S. Tan', 'Male', '1985-12-01', '09211234567', 'Taguig', 'robert@email.com'),
 (10, 'Anastasia L. Megistus', 'Female', '2004-03-12', '09221234567', 'Antipolo City', 'anastasia@gmail.com');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `prescriptions`
---
 
 DROP TABLE IF EXISTS `prescriptions`;
 CREATE TABLE `prescriptions` (
@@ -331,9 +308,7 @@ CREATE TABLE `prescriptions` (
   `end_date` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `prescriptions`
---
+
 
 INSERT INTO `prescriptions` (`prescription_id`, `patient_id`, `doctor_id`, `medication`, `dosage`, `quantity`, `instruction`, `refills_left`, `start_date`, `end_date`) VALUES
 (1, 2, 3, 'Vitamins', '10mg', 10, 'Take 1 tablet every day.', 3, '2026-05-22', ''),
@@ -352,11 +327,8 @@ INSERT INTO `prescriptions` (`prescription_id`, `patient_id`, `doctor_id`, `medi
 (25, 5, 1, 'Amlodipine', '5mg', 30, 'Take 1 tablet every evening.', 2, '2026-06-10', ''),
 (26, 5, 1, 'Atorvastatin', '20mg', 30, 'Take 1 tablet before bedtime.', 3, '2026-06-12', '');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `rooms`
---
+
 
 DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE `rooms` (
@@ -368,11 +340,6 @@ CREATE TABLE `rooms` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sessions`
---
 
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
@@ -391,11 +358,7 @@ CREATE TABLE `sessions` (
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('8atClM7ysHq96YylB31jFzX1DnuuwMNWmfUuwMre', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUjdUUUFNTHJ1aE9Zc2lBRlpwNWRTQkJGY1dINjNpeDluQkZJTktlNSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wYXRpZW50LzMvc2V0LWFwcG9pbnRtZW50IjtzOjU6InJvdXRlIjtzOjE5OiJwYXRpZW50LmFwcG9pbnRtZW50Ijt9fQ==', 1782315980);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `users`
---
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -409,18 +372,12 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
+
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (2, 'PUPCare1 Admin', 'admin1@pupcare.com', NULL, '$2y$12$BrSOWZrGJCypQIWJouxlU.73ojNdkmy5enH/US.EQx4xCY7F/RWX6', NULL, '2026-06-24 06:40:44', '2026-06-24 06:40:44');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `visit_types`
---
 
 DROP TABLE IF EXISTS `visit_types`;
 CREATE TABLE `visit_types` (
@@ -430,109 +387,62 @@ CREATE TABLE `visit_types` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admins`
---
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`admin_id`),
   ADD UNIQUE KEY `admins_email_unique` (`email`);
 
---
--- Indexes for table `cache`
---
 ALTER TABLE `cache`
   ADD PRIMARY KEY (`key`),
   ADD KEY `cache_expiration_index` (`expiration`);
 
---
--- Indexes for table `cache_locks`
---
+
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`),
   ADD KEY `cache_locks_expiration_index` (`expiration`);
 
---
--- Indexes for table `failed_jobs`
---
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
---
--- Indexes for table `jobs`
---
+
 ALTER TABLE `jobs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `jobs_queue_index` (`queue`);
 
---
--- Indexes for table `job_batches`
---
+
 ALTER TABLE `job_batches`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `medical_records`
---
 ALTER TABLE `medical_records`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `password_reset_tokens`
---
 ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
---
--- Indexes for table `rooms`
---
+
 ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
 
---
--- Indexes for table `sessions`
---
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `sessions_user_id_index` (`user_id`),
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
---
--- Indexes for table `users`
---
+
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
---
--- Indexes for table `visit_types`
---
 ALTER TABLE `visit_types`
   ADD PRIMARY KEY (`visit_type`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admins`
---
 ALTER TABLE `admins`
   MODIFY `admin_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `failed_jobs`
---
+
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
