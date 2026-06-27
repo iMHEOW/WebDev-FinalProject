@@ -3,34 +3,6 @@
 @section('title', 'My Prescriptions')
 
 @section('content')
-    @if(session('success'))
-        <div class="modal fade" id="refillSuccess" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 shadow">
-                    <div class="modal-body text-center p-5">
-                        <div class="text-success mb-3">
-                            <svg width="48" height="48" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                            </svg>
-                        </div>
-                        <h3 class="fw-bold text-dark mb-2">Refill Requested!</h3>
-                        <p class="text-muted mb-4 fs-6">{{ session('success') }}</p>
-                        <button type="button" class="btn btn-success px-4 fw-semibold" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var myModal = new bootstrap.Modal(document.getElementById('refillSuccess'));
-                myModal.show();
-            });
-        </script>
-    @endif
-
     <div class="row mb-4">
         <div class="col-12 col-md-6">
             <div class="card shadow-sm text-center border-light rounded-4 h-100">
@@ -76,7 +48,6 @@
                                     <th scope = "col"><center>Quantity</center></th>
                                     <th scope = "col"><center>Instruction</center></th>
                                     <th scope = "col"><center>Refills Left</center></th>
-                                    <th scope = "col"><center>Action</center></th>
                                 </tr>
                             </thead>
                             <tbody class="text-dark fw-medium" style="font-size: 15px;">
@@ -87,17 +58,6 @@
                                     <td class="text-nowrap">{{ $row->qty }}</td>
                                     <td class="text-start">{{ $row->instruction }}</td>
                                     <td class="text-nowrap">{{ $row->{'refills_left'} }}</td>
-                                    <td>
-                                        <form action="{{ route('patient.requestRefill', ['patient' => $patient_id]) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="prescription_id" value="{{ $row->id }}">
-                                            <input type="hidden" name="medication" value="{{ $row->medication }}">
-                                            
-                                            <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 12px;">
-                                                Ask for Refill
-                                            </button>
-                                        </form>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
