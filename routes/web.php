@@ -73,7 +73,6 @@ Route::prefix('patient/{patient}')
         Route::get('/search', [PatientController::class, 'searchRecord'])->name('searchRecord');
 
         Route::get('/prescriptions', [PatientController::class, 'prescriptions'])->name('patient.prescriptions');
-        Route::post('/request-refill', [PatientController::class, 'requestRefill'])->name('patient.requestRefill');
         Route::get('/give-review', [PatientController::class, 'review'])->name('patient.review');
         Route::post('/give-review', [PatientController::class, 'storeReview'])->name('patient.storeReview');
     });
