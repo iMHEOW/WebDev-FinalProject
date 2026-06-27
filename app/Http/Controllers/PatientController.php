@@ -224,33 +224,6 @@ class PatientController extends Controller
         return view('patient.prescriptions', compact('patientName', 'activeP', 'pastP', 'activePresc', 'pastPresc', 'patient_id'));
     }
 
-    public function requestRefill(Request $request, $patient_id)
-    {
-        $prescriptionId = $request->prescription_id;
-        $medicationN = $request->medication;
-
-        $doctorName = DB::table('prescriptions')
-            ->where('prescriptions.prescription_id', $prescriptionId)
-            ->where('prescriptions.patient_id', $patient_id)
-            ->join('doctors', 'prescriptions.doctor_id', '=', 'doctors.doctor_id')
-            ->value('doctors.name');
-
-        if (!$doctorName) {
-            return redirect()->back()->withErrors([
-                'error' => 'Invalid prescription request.'
-            ]);
-        }
-        
-        DB::table('refill_requests')->insert([
-            'request_date' => now(),
-            'prescription_id' => $prescriptionId,
-            'patient_id' => $patient_id,
-            'status' => 'Pending'
-        ]);
-
-        return redirect()->back()->with('success', "Refill request for {$medicationN} has been sent to Dr. {$doctorName}");
-    }
-
     public function review($patient_id)
     {
         $patientName = DB::table('patients')
